@@ -21,39 +21,25 @@ using namespace std;
 int randomizer(int, int, AVL_Tree<string> []);
 bool checkResponses(char&, bool[]);
 void emptyAndReInsert(AVL_Tree<string>, AVL_Tree<string>**, int);
+int* pascal(int);
+void combinations(AVL_Tree<string>&, int, int);
 
 int main(int argc, const char * argv[])
 {
     ifstream dictionaryFile;
-    int answer, size, selectionLength = 0, attempts = 0, temp, firstDimension, secondDimension;
+    int answer, size, selectionLength = 0, attempts = 0, firstDimension, secondDimension;
     AVL_Tree<string> charCount[30], gameTree, **alphaList = nullptr;
-    //size_t begin, end;
     string tempString, letterStr, answerString;
     bool correctAnswer = false, gameOver = false, responses[26] = {false}, correct[26] = {false};
     char tempChar;
     
-    
-    //begin = clock();
+    // Reading in the dictionary
     dictionaryFile.open("dictionary.txt");
     while(dictionaryFile >> tempString)
     {
         size = int(tempString.length());
         charCount[size].insert(tempString);
-        
-        //sum++;
     }
-    //end = clock();
-    
-    /*for (int i = 0; i < 30; i++)
-    {
-        if (charCount[i].getSize() != 0)
-        {
-            cout << "Words with " << i << " letters: " << charCount[i].getSize() << endl;
-        }
-    }*/
-    
-    //cout << "Sum: " << sum << endl;
-    //cout << "Time: " << (end - begin) << endl;
     
     while (!correctAnswer)
     {
@@ -80,40 +66,18 @@ int main(int argc, const char * argv[])
                 break;
             default:
                 cout << "Incorrect response!" << endl;
-                
                 break;
         }
     }
     
     cout << "The word will be length: " << selectionLength << endl;
     AVL_Tree<string> tempTree(charCount[selectionLength]);
-    //cout << "Tree copied" << endl;
-    //gameTree.printLevelTree(cout);
-    
     alphaList = new AVL_Tree<string>*[26];
     for (int i = 0; i < 26; i++)
     {
         alphaList[i] = new AVL_Tree<string>[selectionLength+1];
     }
-    //cout << "Data structure made" << endl;
-    while(tempTree.getSize() > 0)
-    {
-        //cout << tempTree.getSize() << endl;
-        tempString = tempTree.findMin();
-        //cout << tempString << endl;
-        tempTree.remove(tempString);
-        wordStruct tempWord(tempString, selectionLength);
-        //cout << tempString << endl;
-        for (int i = 0; i < 26; i++)
-        {
-            temp = tempWord.letters[i];
-            //cout << temp << endl;
-            alphaList[i][temp].insert(tempString);
-            //cout << "Inserted" << endl;
-        }
-        //cout << "Doing stuff" << endl;
-    }
-    //cout << "Done" << endl;
+    emptyAndReInsert(tempTree, alphaList, selectionLength);
     while(!gameOver)
     {
         do
@@ -125,20 +89,17 @@ int main(int argc, const char * argv[])
         //cout << "Letter chosen: " << tempChar << endl;
         
         size = 0;
-        secondDimension = 0;
         firstDimension = tempChar - 'a';
+        secondDimension = 0;
         answer = 0;
         //cout << "2nd Dimension = " << secondDimension << endl;
         while(secondDimension < selectionLength)
         {
-            //cout << "i = " << i << endl;
             int tempSize = alphaList[firstDimension][secondDimension].getSize();
-            //cout << "tempSize = " << tempSize << endl;
             if(tempSize > size)
             {
                 answer = secondDimension;
                 size = tempSize;
-                //cout << "New answer: " << answer << endl;
             }
             secondDimension++;
         }
@@ -208,11 +169,9 @@ bool checkResponses(char& selection, bool responses[])
     // Checks if the character selected is valid
     if (selection >= 'a' && selection <= 'z')
     {
-        //temp = 'a';
     }
     else if (selection >= 'A' && selection <= 'Z')
     {
-        //temp = 'a';
         selection = ((selection - 'A') + 'a');
     }
     else
@@ -243,8 +202,41 @@ void emptyAndReInsert(AVL_Tree<string> oldTree, AVL_Tree<string> **array, int le
         wordStruct tempWord(tempString, length);
         for (int l = 0; l < 26; l++)
         {
-            temp = tempWord.letters[l];\
+            temp = tempWord.letters[l];
             array[l][temp].insert(tempString);
         }
+    }
+}
+
+int* pascal(int row)
+{
+    int *triangleRow = new int[row+1];
+    triangleRow[0] = 1;
+    if (row == 0)
+    {
+        return triangleRow;
+    }
+    triangleRow[row] = 1;
+    int* triangleRow2 = pascal(row-1);
+    
+    for (int i = 1; i < row; i++)
+    {
+        triangleRow[i] = (triangleRow2[i] + triangleRow2[i-1]);
+    }
+    
+    return triangleRow;
+}
+
+void combinations(AVL_Tree<string> gameTree, int stringLength, int numberOfLetters)
+{
+    int* tempArray = pascal(stringLength);
+    int array[tempArray[numberOfLetters]];
+    string tempString;
+    
+    for (int i = 0; i < gameTree.getSize(); i++)
+    {
+        tempString = gameTree.findMin();
+        gameTree.remove(tempString);
+        
     }
 }
