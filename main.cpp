@@ -18,11 +18,15 @@
 
 using namespace std;
 
+//const int SIZE = 1000;
+//const int DOT = 3;
+//SDL_Plotter g(SIZE + 2*DOT + 1, SIZE + 2*DOT + 1);
+
 int randomizer(int, int, AVL_Tree<string> []);
 bool checkResponses(char&, bool[]);
 void emptyAndReInsert(AVL_Tree<string>, AVL_Tree<string>**, int);
-int* pascal(int);
-void combinations(AVL_Tree<string>&, int, int);
+//int* pascal(int);
+void combinations(AVL_Tree<string>&, int, int, int, char, char[]);
 
 int main(int argc, const char * argv[])
 {
@@ -78,6 +82,14 @@ int main(int argc, const char * argv[])
         alphaList[i] = new AVL_Tree<string>[selectionLength+1];
     }
     emptyAndReInsert(tempTree, alphaList, selectionLength);
+    char guessesArray[(selectionLength+1)];
+    for (int i = 0; i < selectionLength; i++)
+    {
+        guessesArray[i] = '_';
+    }
+    guessesArray[selectionLength] = '\0';
+    
+    
     while(!gameOver)
     {
         do
@@ -125,7 +137,7 @@ int main(int argc, const char * argv[])
         {
             answerString = tempTree.findMin();
         }
-        //cout << "Swapped" << endl;
+        cout << "Swapped" << endl;
         for (int l = 0; l < 26; l++)
         {
             for(int k = 0; k < selectionLength; k++)
@@ -133,11 +145,21 @@ int main(int argc, const char * argv[])
                 alphaList[l][k].makeEmpty();
             }
         }
-        
+        if (answer > 0)
+        {
+            cout << "Combinations" << endl;
+            combinations(tempTree, 0, selectionLength, answer, tempChar, guessesArray);
+        }
+        cout << "Empty and Reinsert" << endl;
         emptyAndReInsert(tempTree, alphaList, selectionLength);
         
+        for (int i = 0; i < selectionLength; i++)
+        {
+            cout << guessesArray[i] << " ";
+        }
+        
         attempts++;
-        cout << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
+        cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
         if (attempts >= 12)
         {
             gameOver = true;
@@ -208,11 +230,11 @@ void emptyAndReInsert(AVL_Tree<string> oldTree, AVL_Tree<string> **array, int le
     }
 }
 
-int* pascal(int row)
+/*int* pascal(int row)
 {
     int *triangleRow = new int[row+1];
     triangleRow[0] = 1;
-    if (row == 0)
+    if (row <= 0)
     {
         return triangleRow;
     }
@@ -224,19 +246,44 @@ int* pascal(int row)
         triangleRow[i] = (triangleRow2[i] + triangleRow2[i-1]);
     }
     
+    delete triangleRow2;
+    
     return triangleRow;
-}
+}*/
 
-void combinations(AVL_Tree<string> gameTree, int stringLength, int numberOfLetters)
+void combinations(AVL_Tree<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
 {
-    int* tempArray = pascal(stringLength);
-    int array[tempArray[numberOfLetters]];
+    AVL_Tree<string> combos[stringLength];
+    int i, biggest = -1, answer = 0;
     string tempString;
     
-    for (int i = 0; i < gameTree.getSize(); i++)
+    while(!gameTree.isEmpty())
     {
         tempString = gameTree.findMin();
         gameTree.remove(tempString);
-        
+        i = beginning;
+        while(i < (stringLength-numberOfLetters) && tempString[i] != c)
+        {
+            i++;
+        }
+        combos[i].insert(tempString);
+    }
+    
+    for (int j = 0; j < stringLength; j++)
+    {
+        if (combos[j].getSize() > biggest)
+        {
+            answer = j;
+            biggest = combos[j].getSize();
+        }
+    }
+    
+    guessesArray[answer] = c;
+    
+    swap(gameTree, combos[answer]);
+    numberOfLetters--;
+    if (numberOfLetters > 0)
+    {
+        combinations(gameTree, (answer+1), stringLength, numberOfLetters, c, guessesArray);
     }
 }
