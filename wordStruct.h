@@ -31,7 +31,6 @@ public:
         for(char c = 'a'; c <= 'z'; c++)
         {
             location = (c - 'a');
-            //cout << "Testing for letter: " << c << endl;
             for(int i = 0; i < length; i++)
             {
                 if (charArray[i] == c)

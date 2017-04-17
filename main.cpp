@@ -13,7 +13,7 @@
 #include "stdlib.h"
 #include <ctime>
 #include "wordStruct.h"
-#include "AVL_Tree.h"
+#include "Single_Linked_List.h"
 #include "SDL_Plotter.h"
 
 using namespace std;
@@ -22,17 +22,17 @@ using namespace std;
 //const int DOT = 3;
 //SDL_Plotter g(SIZE + 2*DOT + 1, SIZE + 2*DOT + 1);
 
-int randomizer(int, int, AVL_Tree<string> []);
+int randomizer(int, int, singleLinkedList<string> []);
 bool checkResponses(char&, bool[]);
-void emptyAndReInsert(AVL_Tree<string>, AVL_Tree<string>**, int);
+void emptyAndReInsert(singleLinkedList<string>, singleLinkedList<string>**, int);
 //int* pascal(int);
-void combinations(AVL_Tree<string>&, int, int, int, char, char[]);
+void combinations(singleLinkedList<string>&, int, int, int, char, char[]);
 
 int main(int argc, const char * argv[])
 {
     ifstream dictionaryFile;
     int answer, size, selectionLength = 0, attempts = 0, firstDimension, secondDimension;
-    AVL_Tree<string> charCount[30], gameTree, **alphaList = nullptr;
+    singleLinkedList<string> charCount[30], gameTree, **alphaList = nullptr;
     string tempString, letterStr, answerString;
     bool correctAnswer = false, gameOver = false, responses[26] = {false}, correct[26] = {false};
     char tempChar;
@@ -75,11 +75,11 @@ int main(int argc, const char * argv[])
     }
     
     cout << "The word will be length: " << selectionLength << endl;
-    AVL_Tree<string> tempTree(charCount[selectionLength]);
-    alphaList = new AVL_Tree<string>*[26];
+    singleLinkedList<string> tempTree(charCount[selectionLength]);
+    alphaList = new singleLinkedList<string>*[26];
     for (int i = 0; i < 26; i++)
     {
-        alphaList[i] = new AVL_Tree<string>[selectionLength+1];
+        alphaList[i] = new singleLinkedList<string>[selectionLength+1];
     }
     emptyAndReInsert(tempTree, alphaList, selectionLength);
     char guessesArray[(selectionLength+1)];
@@ -135,9 +135,9 @@ int main(int argc, const char * argv[])
         swap(tempTree, alphaList[firstDimension][answer]);
         if (tempTree.getSize() == 1)
         {
-            answerString = tempTree.findMin();
+            answerString = tempTree.findHead();
         }
-        cout << "Swapped" << endl;
+        //cout << "Swapped" << endl;
         for (int l = 0; l < 26; l++)
         {
             for(int k = 0; k < selectionLength; k++)
@@ -150,7 +150,7 @@ int main(int argc, const char * argv[])
             cout << "Combinations" << endl;
             combinations(tempTree, 0, selectionLength, answer, tempChar, guessesArray);
         }
-        cout << "Empty and Reinsert" << endl;
+        //cout << "Empty and Reinsert" << endl;
         emptyAndReInsert(tempTree, alphaList, selectionLength);
         
         for (int i = 0; i < selectionLength; i++)
@@ -158,7 +158,10 @@ int main(int argc, const char * argv[])
             cout << guessesArray[i] << " ";
         }
         
-        attempts++;
+        if (answer == 0)
+        {
+            attempts++;
+        }
         cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
         if (attempts >= 12)
         {
@@ -169,7 +172,7 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
-int randomizer(int begin, int end, AVL_Tree<string> array[])
+int randomizer(int begin, int end, singleLinkedList<string> array[])
 {
     int selection;
 
@@ -213,13 +216,12 @@ bool checkResponses(char& selection, bool responses[])
     }
 }
 
-void emptyAndReInsert(AVL_Tree<string> oldTree, AVL_Tree<string> **array, int length)
+void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string> **array, int length)
 {
     string tempString;
     int temp;
     while(oldTree.getSize() > 0)
     {
-        tempString = oldTree.findMin();
         oldTree.remove(tempString);
         wordStruct tempWord(tempString, length);
         for (int l = 0; l < 26; l++)
@@ -251,15 +253,14 @@ void emptyAndReInsert(AVL_Tree<string> oldTree, AVL_Tree<string> **array, int le
     return triangleRow;
 }*/
 
-void combinations(AVL_Tree<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
+void combinations(singleLinkedList<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
 {
-    AVL_Tree<string> combos[stringLength];
+    singleLinkedList<string> combos[stringLength];
     int i, biggest = -1, answer = 0;
     string tempString;
     
     while(!gameTree.isEmpty())
     {
-        tempString = gameTree.findMin();
         gameTree.remove(tempString);
         i = beginning;
         while(i < (stringLength-numberOfLetters) && tempString[i] != c)
