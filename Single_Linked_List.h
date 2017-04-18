@@ -115,6 +115,8 @@ public:
         {
             Node *tempNode = head;
             temp = head->element;
+            //cout << "Size: " << size << "\t";
+            //cout << "Word: " << temp << endl;
             if (head == tail)
             {
                 tail = tail->next;
@@ -132,6 +134,22 @@ public:
         }
         
         return head->element;
+    }
+    void printList()
+    {
+        if(size == 0)
+        {
+            cout << "Empty list" << endl;
+        }
+        else
+        {
+            Node *tempNode = head;
+            while(tempNode)
+            {
+                cout << tempNode->element << endl;
+                tempNode = tempNode->next;
+            }
+        }
     }
 private:
     struct Node
