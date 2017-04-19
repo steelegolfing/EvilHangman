@@ -18,11 +18,7 @@
 
 using namespace std;
 
-//const int SIZE = 1000;
-//const int DOT = 3;
-//SDL_Plotter g(SIZE + 2*DOT + 1, SIZE + 2*DOT + 1);
-
-int difficultyLevel(singleLinkedList<string> []);
+int difficultyLevel(singleLinkedList<string> [], SDL_Event&, bool&);
 int randomizer(int, int, singleLinkedList<string> []);
 bool checkResponses(char&, bool[]);
 void emptyAndReInsert(singleLinkedList<string>, singleLinkedList<string>**, int);
@@ -36,9 +32,11 @@ int main(int argc, const char * argv[])
     ifstream dictionaryFile;
     int answer, size, selectionLength = 0, attempts, firstDimension, secondDimension;
     singleLinkedList<string> charCount[30], gameTree, **alphaList = nullptr;
-    string tempString, letterStr, answerString;
+    string tempString, letterStr, answerString, incorrectGuesses = " ", evilWordString;
     bool correctAnswer, gameOver = false, responses[26] = {false}, correct[26] = {false}, victory;
-    char tempChar;
+    char tempChar, key;
+    const Uint8 *currentKeyStates;
+    LTexture evilWord, incorrectLetters;
     
     // Reading in the dictionary
     dictionaryFile.open("dictionary.txt");
@@ -48,151 +46,323 @@ int main(int argc, const char * argv[])
         charCount[size].insert(tempString);
     }
     
-    while (!gameOver)
+    string mehString = " ";
+    //Start up SDL and create window
+    if( !init() )
     {
-        gameOver = false;
-        victory = false;
-        correctAnswer = false;
-        attempts = 0;
-        selectionLength = difficultyLevel(charCount);
-        
-        //cout << "The word will be length: " << selectionLength << endl;
-        singleLinkedList<string> tempTree(charCount[selectionLength]);
-        alphaList = new singleLinkedList<string>*[26];
-        for (int i = 0; i < 26; i++)
+        printf( "Failed to initialize!\n" );
+    }
+    else
+    {
+        //Load media
+        if( !gTextTexture.loadMedia("Wub") )
         {
-            alphaList[i] = new singleLinkedList<string>[selectionLength+1];
+            printf( "Failed to load media1!\n" );
         }
-        emptyAndReInsert(tempTree, alphaList, selectionLength);
-        char guessesArray[(selectionLength+1)];
-        for (int i = 0; i < selectionLength; i++)
+        else if (!incorrectLetters.loadMedia(mehString))
         {
-            guessesArray[i] = '_';
+            printf("Failed to load media2!\n");
         }
-        guessesArray[selectionLength] = '\0';
-        cout << guessesArray << endl;
-        for (int i = 0; i < 26; i++)
+        else
         {
-            responses[i] = false;
-            correct[i] = false;
-        }
-        
-        while(!gameOver && !victory)
-        {
-            /*for (int i = 0; i < 26; i++)
+            
+            //Main loop flag
+            bool quit = false;
+            
+            //Event handler
+            SDL_Event e;
+            
+            selectionLength = difficultyLevel(charCount, e, quit);
+            
+            //While application is running
+            /*while( !quit )
             {
-                cout << char(i + 'a') << ": ";
-                for (int j = 0; j < (selectionLength+1); j++)
+                if (selectionLength == 0)
                 {
-                    cout << alphaList[i][j].getSize() << " ";
+                    //selectionLength = difficultyLevel(charCount, e, quit);
                 }
-                cout << endl;
+                
+                
+                
+                //Handle events on queue
+                while( SDL_PollEvent( &e ) != 0 )
+                {
+                    //User requests quit
+                    if( e.type == SDL_QUIT )
+                    {
+                        quit = true;
+                    }
+                    if (e.type == SDL_KEYDOWN)
+                    {
+                        //gTextTexture.loadMedia("Wub-a-lub-a-rub-rub!!");
+                        //mehString = mehString + " ";
+                        //mehString = mehString + incorrectLetters.getKey();
+                        //incorrectLetters.loadMedia(guessesArray);
+                    }
+                    if (e.type == SDL_KEYUP)
+                    {
+                        //gTextTexture.loadMedia("Supercalafragalisticexpialidocious!!");
+                    }
+                }
+                
+                
+                
+                //Clear screen
+                SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF );
+                SDL_RenderClear( gRenderer );
+                
+                //Render current frame
+                //gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, ( SCREEN_HEIGHT - gTextTexture.getHeight() ) - 100);
+                //incorrectLetters.render(50, 50);
+                
+                //Update screen
+                SDL_RenderPresent( gRenderer );
             }*/
             
-            do
+            while (!gameOver)
             {
-                cout << "Enter a letter: " << endl;
-                cin >> letterStr;
-                tempChar = letterStr[0];
-            }while(!checkResponses(tempChar, responses));
-            //cout << "Letter chosen: " << tempChar << endl;
-            
-            size = 0;
-            firstDimension = tempChar - 'a';
-            secondDimension = 0;
-            answer = 0;
-            //cout << "2nd Dimension = " << secondDimension << endl;
-            while(secondDimension < selectionLength)
-            {
-                int tempSize = alphaList[firstDimension][secondDimension].getSize();
-                if(tempSize > size)
+                //gameOver = false;
+                victory = false;
+                correctAnswer = false;
+                attempts = 0;
+                //selectionLength = difficultyLevel(charCount);
+                
+                //cout << "The word will be length: " << selectionLength << endl;
+                singleLinkedList<string> tempTree(charCount[selectionLength]);
+                alphaList = new singleLinkedList<string>*[26];
+                for (int i = 0; i < 26; i++)
                 {
-                    answer = secondDimension;
-                    size = tempSize;
+                    alphaList[i] = new singleLinkedList<string>[selectionLength+1];
                 }
-                secondDimension++;
-            }
-            if (answer > 0)
-            {
-                correct[(tempChar - 'a')] = true;
-            }
-            //cout << "Answer is: " << answer << endl;
-            //alphaList[firstDimension][answer].printLevelTree(cout);
-            //cout << "The most words remaining have " << answer << " " << tempChar;
-            //cout << "'s is " << alphaList[firstDimension][answer].getSize() << endl;
-            cout << "Incorrect guesses: ";
-            for (int i = 0; i < 26; i++)
-            {
-                if (responses[i] && !correct[i])
+                emptyAndReInsert(tempTree, alphaList, selectionLength);
+                char guessesArray[(selectionLength+1)];
+                for (int i = 0; i < selectionLength; i++)
                 {
-                    cout << char(i + 'a') << " ";
+                    guessesArray[i] = '_';
                 }
-            }
-            cout << endl;
-            swap(tempTree, alphaList[firstDimension][answer]);
-            if (tempTree.getSize() == 1)
-            {
-                answerString = tempTree.findHead();
-            }
-            //cout << "Swapped" << endl;
-            for (int l = 0; l < 26; l++)
-            {
-                for(int k = 0; k < selectionLength; k++)
+                guessesArray[selectionLength] = '\0';
+                cout << guessesArray << endl;
+                for (int i = 0; i < 26; i++)
                 {
-                    alphaList[l][k].makeEmpty();
+                    responses[i] = false;
+                    correct[i] = false;
                 }
+                
+                evilWordString = "";
+                for (int i = 0; i < selectionLength; i++)
+                {
+                    evilWordString = evilWordString + guessesArray[i];
+                    evilWordString = evilWordString + " ";
+                }
+                
+                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_RenderClear(gRenderer);
+                evilWord.loadMedia(evilWordString);
+                evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
+                incorrectLetters.loadMedia(incorrectGuesses);
+                incorrectLetters.render(50, 50);
+                SDL_RenderPresent(gRenderer);
+                
+                while(!gameOver && !victory)
+                {
+                    /*do
+                    {
+                        cout << "Enter a letter: " << endl;
+                        cin >> letterStr;
+                        tempChar = letterStr[0];
+                    }while(!checkResponses(tempChar, responses));*/
+                    
+                    key = '\0';
+                    
+                    //cout << "While loop" << endl;
+                    while (key == '\0')
+                    {
+                        while( SDL_PollEvent( &e ) != 0 )
+                        {
+                            //User requests quit
+                            if( e.type == SDL_QUIT )
+                            {
+                                quit = true;
+                            }
+                            if (e.type == SDL_KEYDOWN)
+                            {
+                                key = '\0';
+
+                                currentKeyStates = SDL_GetKeyboardState( NULL );
+                                if(currentKeyStates[SDL_SCANCODE_A]) key = 'a';
+                                if(currentKeyStates[SDL_SCANCODE_B]) key = 'b';
+                                if(currentKeyStates[SDL_SCANCODE_C]) key = 'c';
+                                if(currentKeyStates[SDL_SCANCODE_D]) key = 'd';
+                                if(currentKeyStates[SDL_SCANCODE_E]) key = 'e';
+                                if(currentKeyStates[SDL_SCANCODE_F]) key = 'f';
+                                if(currentKeyStates[SDL_SCANCODE_G]) key = 'g';
+                                if(currentKeyStates[SDL_SCANCODE_H]) key = 'h';
+                                if(currentKeyStates[SDL_SCANCODE_I]) key = 'i';
+                                if(currentKeyStates[SDL_SCANCODE_J]) key = 'j';
+                                if(currentKeyStates[SDL_SCANCODE_K]) key = 'k';
+                                if(currentKeyStates[SDL_SCANCODE_L]) key = 'l';
+                                if(currentKeyStates[SDL_SCANCODE_M]) key = 'm';
+                                if(currentKeyStates[SDL_SCANCODE_N]) key = 'n';
+                                if(currentKeyStates[SDL_SCANCODE_O]) key = 'o';
+                                if(currentKeyStates[SDL_SCANCODE_P]) key = 'p';
+                                if(currentKeyStates[SDL_SCANCODE_Q]) key = 'q';
+                                if(currentKeyStates[SDL_SCANCODE_R]) key = 'r';
+                                if(currentKeyStates[SDL_SCANCODE_S]) key = 's';
+                                if(currentKeyStates[SDL_SCANCODE_T]) key = 't';
+                                if(currentKeyStates[SDL_SCANCODE_U]) key = 'u';
+                                if(currentKeyStates[SDL_SCANCODE_V]) key = 'v';
+                                if(currentKeyStates[SDL_SCANCODE_W]) key = 'w';
+                                if(currentKeyStates[SDL_SCANCODE_X]) key = 'x';
+                                if(currentKeyStates[SDL_SCANCODE_Y]) key = 'y';
+                                if(currentKeyStates[SDL_SCANCODE_Z]) key = 'z';
+                            }
+                        }
+                    }
+
+                    size = 0;
+                    firstDimension = key - 'a';
+                    secondDimension = 0;
+                    answer = 0;
+                    while(secondDimension < selectionLength)
+                    {
+                        int tempSize = alphaList[firstDimension][secondDimension].getSize();
+                        if(tempSize > size)
+                        {
+                            answer = secondDimension;
+                            size = tempSize;
+                        }
+                        secondDimension++;
+                    }
+                    if (answer > 0)
+                    {
+                        correct[(key - 'a')] = true;
+                    }
+                    else
+                    {
+                        incorrectGuesses = incorrectGuesses + key;
+                        incorrectGuesses = incorrectGuesses + " ";
+                    }
+                    cout << "Incorrect guesses: " << incorrectGuesses << endl;
+                    /*cout << "Incorrect guesses: ";
+                    for (int i = 0; i < 26; i++)
+                    {
+                        if (responses[i] && !correct[i])
+                        {
+                            //cout << char(i + 'a') << " ";
+                        }
+                    }
+                    cout << endl;*/
+                    swap(tempTree, alphaList[firstDimension][answer]);
+                    if (tempTree.getSize() == 1)
+                    {
+                        answerString = tempTree.findHead();
+                    }
+                    for (int l = 0; l < 26; l++)
+                    {
+                        for(int k = 0; k < selectionLength; k++)
+                        {
+                            alphaList[l][k].makeEmpty();
+                        }
+                    }
+                    if (answer > 0)
+                    {
+                        combinations(tempTree, 0, selectionLength, answer, key, guessesArray);
+                    }
+                    emptyAndReInsert(tempTree, alphaList, selectionLength);
+                    
+                    attemptCheck(victory, selectionLength, guessesArray, answer, attempts, gameOver);
+                    
+                    evilWordString = "";
+                    for (int i = 0; i < selectionLength; i++)
+                    {
+                        evilWordString = evilWordString + guessesArray[i];
+                        evilWordString = evilWordString + " ";
+                    }
+                    
+                    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                    SDL_RenderClear(gRenderer);
+                    evilWord.loadMedia(evilWordString);
+                    evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
+                    incorrectLetters.loadMedia(incorrectGuesses);
+                    incorrectLetters.render(50, 50);
+                    SDL_RenderPresent(gRenderer);
+                }
+                
+                gameOver = endGame(victory, gameOver);
             }
-            //tempTree.printList();
-            if (answer > 0)
-            {
-                //cout << "Combinations" << endl;
-                combinations(tempTree, 0, selectionLength, answer, tempChar, guessesArray);
-            }
-            //cout << "Empty and Reinsert" << endl;
-            emptyAndReInsert(tempTree, alphaList, selectionLength);
-            
-            attemptCheck(victory, selectionLength, guessesArray, answer, attempts, gameOver);
+
         }
-        
-        gameOver = endGame(victory, gameOver);
     }
+    
+    
+    
+    
+    //Free resources and close SDL
+    close();
     
     return 0;
 }
 
-int difficultyLevel(singleLinkedList<string> charCount[])
+int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit)
 {
     bool correctAnswer = false;
     string letterStr;
     int answer, selectionLength = 0;
+    LTexture difficulty;
+    const Uint8 *currentKeyStates;
+    char key;
+    //cout << "difficulty.loadMedia" << endl;
+    difficulty.loadMedia("Would you like beginner(1), intermediate(2), or advanced(3)?");
     while (!correctAnswer)
     {
-        cout << "Would you like beginner(1), intermediate(2), or advanced(3)?" << endl;
-        cin >> letterStr;
-        answer = atoi(letterStr.c_str());
-        
-        switch (answer)
+        while( SDL_PollEvent( &e ) != 0 )
         {
-            case 1:
-                cout << "You have chosen beginner! (words 2-5 letters in length)" << endl;
-                correctAnswer = true;
-                selectionLength = randomizer(2, 5, charCount);
-                break;
-            case 2:
-                cout << "You have chosen intermediate! (words 6-10 letters in length)" << endl;
-                correctAnswer = true;
-                selectionLength = randomizer(6, 10, charCount);
-                break;
-            case 3:
-                cout << "You have chosen advanced! (words 11+ letters in length)" << endl;
-                correctAnswer = true;
-                selectionLength = randomizer(11, 29, charCount);
-                break;
-            default:
-                cout << "Incorrect response!" << endl;
-                break;
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                quit = true;
+            }
+            if (e.type == SDL_KEYDOWN)
+            {
+                key = '\0';
+                
+                currentKeyStates = SDL_GetKeyboardState( NULL );
+                if(currentKeyStates[SDL_SCANCODE_1]) key = '1';
+                if(currentKeyStates[SDL_SCANCODE_2]) key = '2';
+                if(currentKeyStates[SDL_SCANCODE_3]) key = '3';
+                
+                switch (key)
+                {
+                    case '1':
+                        cout << "You have chosen beginner! (words 2-5 letters in length)" << endl;
+                        correctAnswer = true;
+                        selectionLength = randomizer(2, 5, charCount);
+                        break;
+                    case '2':
+                        cout << "You have chosen intermediate! (words 6-10 letters in length)" << endl;
+                        correctAnswer = true;
+                        selectionLength = randomizer(6, 10, charCount);
+                        break;
+                    case '3':
+                        cout << "You have chosen advanced! (words 11+ letters in length)" << endl;
+                        correctAnswer = true;
+                        selectionLength = randomizer(11, 29, charCount);
+                        break;
+                    default:
+                        cout << "Incorrect response!" << endl;
+                        break;
+                }
+
+            }
         }
+        
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_RenderClear( gRenderer );
+        difficulty.render((SCREEN_WIDTH - difficulty.getWidth()) / 2, (SCREEN_HEIGHT - difficulty.getHeight()) / 2);
+        SDL_RenderPresent(gRenderer);
     }
+
+    difficulty.free();
     
     return selectionLength;
 }
