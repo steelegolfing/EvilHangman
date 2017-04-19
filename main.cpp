@@ -248,7 +248,7 @@ int main(int argc, const char * argv[])
                         incorrectGuesses = incorrectGuesses + key;
                         incorrectGuesses = incorrectGuesses + " ";
                     }
-                    cout << "Incorrect guesses: " << incorrectGuesses << endl;
+                    //cout << "Incorrect guesses: " << incorrectGuesses << endl;
                     /*cout << "Incorrect guesses: ";
                     for (int i = 0; i < 26; i++)
                     {
@@ -343,22 +343,22 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
                 switch (key)
                 {
                     case '1':
-                        cout << "You have chosen beginner! (words 2-5 letters in length)" << endl;
+                        //cout << "You have chosen beginner! (words 2-5 letters in length)" << endl;
                         correctAnswer = true;
                         selectionLength = randomizer(2, 5, charCount);
                         break;
                     case '2':
-                        cout << "You have chosen intermediate! (words 6-10 letters in length)" << endl;
+                        //cout << "You have chosen intermediate! (words 6-10 letters in length)" << endl;
                         correctAnswer = true;
                         selectionLength = randomizer(6, 10, charCount);
                         break;
                     case '3':
-                        cout << "You have chosen advanced! (words 11+ letters in length)" << endl;
+                        //cout << "You have chosen advanced! (words 11+ letters in length)" << endl;
                         correctAnswer = true;
                         selectionLength = randomizer(11, 29, charCount);
                         break;
                     default:
-                        cout << "Incorrect response!" << endl;
+                        //cout << "Incorrect response!" << endl;
                         break;
                 }
 
@@ -499,7 +499,7 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
     victory = true;
     for (int i = 0; i < selectionLength; i++)
     {
-        cout << guessesArray[i] << " ";
+        //cout << guessesArray[i] << " ";
         if (guessesArray[i] == '_')
         {
             victory = false;
@@ -510,7 +510,7 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
     {
         attempts++;
     }
-    cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
+    //cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
     if (attempts >= 12)
     {
         gameOver = true;
@@ -527,12 +527,12 @@ bool endGame(bool victory, bool gameOver)
     if (victory)
     {
         endOfGame.loadMedia("Congratulations!!! You saved the hangman!!");
-        cout << "Congratulations!!! You saved the hangman!!" << endl;
+        //cout << "Congratulations!!! You saved the hangman!!" << endl;
     }
     else
     {
         endOfGame.loadMedia("Game over!! Murderer!!!!!");
-        cout << "Game over!! Murderer!!!!!" << endl;
+        //cout << "Game over!! Murderer!!!!!" << endl;
     }
     
     //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
