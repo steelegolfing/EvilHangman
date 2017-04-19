@@ -72,7 +72,7 @@ int main(int argc, const char * argv[])
             //Event handler
             SDL_Event e;
             
-            selectionLength = difficultyLevel(charCount, e, quit);
+            //selectionLength = difficultyLevel(charCount, e, quit);
             
             //While application is running
             /*while( !quit )
@@ -125,7 +125,7 @@ int main(int argc, const char * argv[])
                 victory = false;
                 correctAnswer = false;
                 attempts = 0;
-                //selectionLength = difficultyLevel(charCount);
+                selectionLength = difficultyLevel(charCount, e, quit);
                 
                 //cout << "The word will be length: " << selectionLength << endl;
                 singleLinkedList<string> tempTree(charCount[selectionLength]);
@@ -148,7 +148,8 @@ int main(int argc, const char * argv[])
                     correct[i] = false;
                 }
                 
-                evilWordString = "";
+                evilWordString.clear();
+                incorrectGuesses = " ";
                 for (int i = 0; i < selectionLength; i++)
                 {
                     evilWordString = evilWordString + guessesArray[i];
@@ -172,52 +173,56 @@ int main(int argc, const char * argv[])
                         tempChar = letterStr[0];
                     }while(!checkResponses(tempChar, responses));*/
                     
-                    key = '\0';
+                    
                     
                     //cout << "While loop" << endl;
-                    while (key == '\0')
+                    do
                     {
-                        while( SDL_PollEvent( &e ) != 0 )
+                        key = '\0';
+                        while (key == '\0')
                         {
-                            //User requests quit
-                            if( e.type == SDL_QUIT )
+                            while( SDL_PollEvent( &e ) != 0 )
                             {
-                                quit = true;
-                            }
-                            if (e.type == SDL_KEYDOWN)
-                            {
-                                key = '\0';
-
-                                currentKeyStates = SDL_GetKeyboardState( NULL );
-                                if(currentKeyStates[SDL_SCANCODE_A]) key = 'a';
-                                if(currentKeyStates[SDL_SCANCODE_B]) key = 'b';
-                                if(currentKeyStates[SDL_SCANCODE_C]) key = 'c';
-                                if(currentKeyStates[SDL_SCANCODE_D]) key = 'd';
-                                if(currentKeyStates[SDL_SCANCODE_E]) key = 'e';
-                                if(currentKeyStates[SDL_SCANCODE_F]) key = 'f';
-                                if(currentKeyStates[SDL_SCANCODE_G]) key = 'g';
-                                if(currentKeyStates[SDL_SCANCODE_H]) key = 'h';
-                                if(currentKeyStates[SDL_SCANCODE_I]) key = 'i';
-                                if(currentKeyStates[SDL_SCANCODE_J]) key = 'j';
-                                if(currentKeyStates[SDL_SCANCODE_K]) key = 'k';
-                                if(currentKeyStates[SDL_SCANCODE_L]) key = 'l';
-                                if(currentKeyStates[SDL_SCANCODE_M]) key = 'm';
-                                if(currentKeyStates[SDL_SCANCODE_N]) key = 'n';
-                                if(currentKeyStates[SDL_SCANCODE_O]) key = 'o';
-                                if(currentKeyStates[SDL_SCANCODE_P]) key = 'p';
-                                if(currentKeyStates[SDL_SCANCODE_Q]) key = 'q';
-                                if(currentKeyStates[SDL_SCANCODE_R]) key = 'r';
-                                if(currentKeyStates[SDL_SCANCODE_S]) key = 's';
-                                if(currentKeyStates[SDL_SCANCODE_T]) key = 't';
-                                if(currentKeyStates[SDL_SCANCODE_U]) key = 'u';
-                                if(currentKeyStates[SDL_SCANCODE_V]) key = 'v';
-                                if(currentKeyStates[SDL_SCANCODE_W]) key = 'w';
-                                if(currentKeyStates[SDL_SCANCODE_X]) key = 'x';
-                                if(currentKeyStates[SDL_SCANCODE_Y]) key = 'y';
-                                if(currentKeyStates[SDL_SCANCODE_Z]) key = 'z';
+                                //User requests quit
+                                if( e.type == SDL_QUIT )
+                                {
+                                    quit = true;
+                                }
+                                if (e.type == SDL_KEYDOWN)
+                                {
+                                    key = '\0';
+                                    
+                                    currentKeyStates = SDL_GetKeyboardState( NULL );
+                                    if(currentKeyStates[SDL_SCANCODE_A]) key = 'a';
+                                    if(currentKeyStates[SDL_SCANCODE_B]) key = 'b';
+                                    if(currentKeyStates[SDL_SCANCODE_C]) key = 'c';
+                                    if(currentKeyStates[SDL_SCANCODE_D]) key = 'd';
+                                    if(currentKeyStates[SDL_SCANCODE_E]) key = 'e';
+                                    if(currentKeyStates[SDL_SCANCODE_F]) key = 'f';
+                                    if(currentKeyStates[SDL_SCANCODE_G]) key = 'g';
+                                    if(currentKeyStates[SDL_SCANCODE_H]) key = 'h';
+                                    if(currentKeyStates[SDL_SCANCODE_I]) key = 'i';
+                                    if(currentKeyStates[SDL_SCANCODE_J]) key = 'j';
+                                    if(currentKeyStates[SDL_SCANCODE_K]) key = 'k';
+                                    if(currentKeyStates[SDL_SCANCODE_L]) key = 'l';
+                                    if(currentKeyStates[SDL_SCANCODE_M]) key = 'm';
+                                    if(currentKeyStates[SDL_SCANCODE_N]) key = 'n';
+                                    if(currentKeyStates[SDL_SCANCODE_O]) key = 'o';
+                                    if(currentKeyStates[SDL_SCANCODE_P]) key = 'p';
+                                    if(currentKeyStates[SDL_SCANCODE_Q]) key = 'q';
+                                    if(currentKeyStates[SDL_SCANCODE_R]) key = 'r';
+                                    if(currentKeyStates[SDL_SCANCODE_S]) key = 's';
+                                    if(currentKeyStates[SDL_SCANCODE_T]) key = 't';
+                                    if(currentKeyStates[SDL_SCANCODE_U]) key = 'u';
+                                    if(currentKeyStates[SDL_SCANCODE_V]) key = 'v';
+                                    if(currentKeyStates[SDL_SCANCODE_W]) key = 'w';
+                                    if(currentKeyStates[SDL_SCANCODE_X]) key = 'x';
+                                    if(currentKeyStates[SDL_SCANCODE_Y]) key = 'y';
+                                    if(currentKeyStates[SDL_SCANCODE_Z]) key = 'z';
+                                }
                             }
                         }
-                    }
+                    }while (!checkResponses(key, responses));
 
                     size = 0;
                     firstDimension = key - 'a';
@@ -239,6 +244,7 @@ int main(int argc, const char * argv[])
                     }
                     else
                     {
+                        //responses[(key) - 'a'] = true;
                         incorrectGuesses = incorrectGuesses + key;
                         incorrectGuesses = incorrectGuesses + " ";
                     }
@@ -288,6 +294,9 @@ int main(int argc, const char * argv[])
                     SDL_RenderPresent(gRenderer);
                 }
                 
+                incorrectLetters.free();
+                evilWord.free();
+                SDL_RenderClear(gRenderer);
                 gameOver = endGame(victory, gameOver);
             }
 
@@ -511,33 +520,62 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
 bool endGame(bool victory, bool gameOver)
 {
     string letterStr;
-    char tempChar;
+    char tempChar, key = '\0';
     bool correctAnswer = false;
+    const Uint8 *currentKeyStates;
+    LTexture endOfGame, question;
     if (victory)
     {
+        endOfGame.loadMedia("Congratulations!!! You saved the hangman!!");
         cout << "Congratulations!!! You saved the hangman!!" << endl;
     }
     else
     {
+        endOfGame.loadMedia("Game over!! Murderer!!!!!");
         cout << "Game over!! Murderer!!!!!" << endl;
     }
     
+    //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
+    SDL_RenderClear(gRenderer);
+    //SDL_RenderPresent(gRenderer);
+    
     while (!correctAnswer)
     {
-        cout << "Would you like to play again? (y/n)" << endl;
-        cin >> letterStr;
-        tempChar = letterStr[0];
-        if (tempChar == 'y' || tempChar == 'Y')
+        question.loadMedia("Would you like to play again? (y/n)");
+        SDL_RenderClear(gRenderer);
+        endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
+        question.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, ((SCREEN_HEIGHT - endOfGame.getHeight()) / 2) + endOfGame.getHeight());
+        SDL_RenderPresent(gRenderer);
+        //cout << "Would you like to play again? (y/n)" << endl;
+        //cin >> letterStr;
+        //tempChar = letterStr[0];
+        SDL_Event e;
+        while (SDL_PollEvent(&e) != 0)
         {
-            gameOver = false;
-            correctAnswer = true;
-        }
-        else if (tempChar == 'n' || tempChar == 'N')
-        {
-            gameOver = true;
-            correctAnswer = true;
+            if (e.type == SDL_KEYDOWN)
+            {
+                key = '\0';
+                
+                currentKeyStates = SDL_GetKeyboardState( NULL );
+                if(currentKeyStates[SDL_SCANCODE_N]) key = 'n';
+                if(currentKeyStates[SDL_SCANCODE_Y]) key = 'y';
+            }
+            
+            if (key == 'y')
+            {
+                gameOver = false;
+                correctAnswer = true;
+            }
+            else if (key == 'n')
+            {
+                gameOver = true;
+                correctAnswer = true;
+            }
         }
     }
+    
+    question.free();
+    endOfGame.free();
     
     return gameOver;
 }
