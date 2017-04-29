@@ -1,10 +1,10 @@
-//
-//  wordStruct.h
-//  3334 - Group Project
-//
-//  Created by Travis Cox on 3/29/17.
-//  Copyright © 2017 Travis Cox. All rights reserved.
-//
+/*
+*   Author: Hang-In-There
+*   File Name: wordStruct.h
+*   File Description:
+*   Date Created: 3/29/2017
+*   Date Last Modified: 4/30/2017
+*/
 
 #include <string>
 
