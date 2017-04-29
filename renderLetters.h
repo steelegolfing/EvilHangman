@@ -14,7 +14,7 @@ class renderLetters
 private:
     string word;
     SDL_Renderer *gRenderer;
-    int WIDTH = 20, HEIGHT = 25, SPACE_BETWEEN_LETTERS = 10;
+    int WIDTH = 20, HEIGHT = 25, SPACE_BETWEEN_LETTERS = 10, wordLength;
     
     void drawB(int startX, int startY)
     {
@@ -329,16 +329,11 @@ private:
 
     
 public:
-    renderLetters()
-    {
-        
-    }
-    
-    void drawWord(string w = "", int startX = 0, int startY = 0, SDL_Renderer* g = NULL)
+    renderLetters(string w = "", int startX = 0, int startY = 0, SDL_Renderer* g = NULL)
     {
         gRenderer = g;
         word = w;
-        int wordLength = word.length(), beginRenderX, beginRenderY;
+        wordLength = word.length(), beginRenderX, beginRenderY;
         if (startX == 0)
         {
             beginRenderX = (920 - (wordLength*WIDTH)+((wordLength-1)*SPACE_BETWEEN_LETTERS)) / 2;
