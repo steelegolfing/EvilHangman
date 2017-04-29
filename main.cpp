@@ -1,10 +1,11 @@
-//
-//  main.cpp
-//  3334 - Group Project
-//
-//  Created by Travis Cox on 3/29/17.
-//  Copyright © 2017 Travis Cox. All rights reserved.
-//
+/*
+*   Author: Hang-In-There
+*   File Name: main.cpp
+*   File Description: This file is where the instance of each game runs. 
+*   User input is processed and the screen is update accordingly. 
+*   Date Created: 3/29/2017
+*   Date Last Modified: 4/30/2017
+*/
 
 #include <iostream>
 #include <fstream>
@@ -119,6 +120,7 @@ int main(int argc, const char * argv[])
                 SDL_RenderPresent( gRenderer );
             }*/
             
+            //runs until game instance is finished
             while (!gameOver)
             {
                 //gameOver = false;
@@ -174,8 +176,8 @@ int main(int argc, const char * argv[])
                     }while(!checkResponses(tempChar, responses));*/
                     
                     
-                    
-                    //cout << "While loop" << endl;
+                   
+                    //keeps screen open until user requests exit
                     do
                     {
                         key = '\0';
@@ -258,6 +260,7 @@ int main(int argc, const char * argv[])
                         }
                     }
                     cout << endl;*/
+                    //after selecting largest set, replaces temp tree with largest subset
                     swap(tempTree, alphaList[firstDimension][answer]);
                     if (tempTree.getSize() == 1)
                     {
@@ -311,6 +314,15 @@ int main(int argc, const char * argv[])
     
     return 0;
 }
+
+/*
+*   function: difficultyLevel
+*   description: draws prompt for user to decide difficulty/ randomly decides word length based 
+*   on user input for difficulty 
+*   precondition: an SDL instance exists and game mode has begun
+*   postcondition: a word length has been decided
+*   return: int-word length
+*/
 
 int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit)
 {
@@ -376,6 +388,14 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
     return selectionLength;
 }
 
+/*
+*   function: randomizer
+*   description: determines the length of word based off of a given range
+*   precondition: user has selected difficulty level associated with range of word lengths
+*   postcondition: a word length has been decided
+*   return: int-word length
+*/
+
 int randomizer(int begin, int end, singleLinkedList<string> array[])
 {
     int selection;
@@ -391,6 +411,15 @@ int randomizer(int begin, int end, singleLinkedList<string> array[])
     
     return selection;
 }
+
+/*
+*   function: checkResponses
+*   description: confirms if guess is a valid entry or if letter has
+*   already been guessed
+*   precondition: a guess has been entered by the user
+*   postcondition: the validity of the guess has been determined
+*   return: bool-if guess is valid or not
+*/
 
 bool checkResponses(char& selection, bool responses[])
 {
@@ -419,6 +448,15 @@ bool checkResponses(char& selection, bool responses[])
         return !responses[selection - temp];
     }
 }
+
+/*
+*   function: emptryAndReInsert
+*   description: inserts all strings in singlely linked list into a 2d array bassed on
+*   number of each letter present in the word
+*   precondition: a singely linked list exists containing the largest set
+*   postcondition: a 2d array is constructed organized by number of each letter in a word
+*   return: void
+*/
 
 void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string> **array, int length)
 {
@@ -457,6 +495,15 @@ void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string>
     return triangleRow;
 }*/
 
+/*
+*   function: combinations
+*   description: determines the largest set of words with more than one of a particular 
+*   letter
+*   precondition: a linked list exists
+*   postcondition: the largest set from the list is determined
+*   return: void
+*/
+
 void combinations(singleLinkedList<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
 {
     singleLinkedList<string> combos[stringLength];
@@ -494,6 +541,14 @@ void combinations(singleLinkedList<string> &gameTree, int beginning, int stringL
     }
 }
 
+/*
+*   function: attemptCheck
+*   description: checks the current number of attempts and determines if game is over
+*   precondition: a game instance is in play
+*   postcondition: it is determined whether the game should continue
+*   return: void
+*/
+
 void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int answer, int &attempts, bool &gameOver)
 {
     victory = true;
@@ -516,6 +571,14 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
         gameOver = true;
     }
 }
+
+/*
+*   function: endGame
+*   description: finishes current game and ends game based on user input 
+*   precondition: a game has been won or lsot
+*   postcondition: game is restarted or ended
+*   return: bool-state of game
+*/
 
 bool endGame(bool victory, bool gameOver)
 {
