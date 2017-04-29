@@ -669,3 +669,233 @@ static int Sound(void *data){
 
 
 #endif /* SDL_PLOTTER_H_ */
+
+
+//Draw b
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 500, 300, 500, 350);
+SDL_RenderDrawLine(gRenderer, 520, 325, 520, 350);
+SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw o
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 530, 325, 530, 350);
+SDL_RenderDrawLine(gRenderer, 530, 325, 550, 325);
+SDL_RenderDrawLine(gRenderer, 550, 325, 550, 350);
+SDL_RenderDrawLine(gRenderer, 530, 350, 550, 350);
+
+//Draw o
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 560, 325, 560, 350);
+SDL_RenderDrawLine(gRenderer, 560, 325, 580, 325);
+SDL_RenderDrawLine(gRenderer, 580, 325, 580, 350);
+SDL_RenderDrawLine(gRenderer, 560, 350, 580, 350);
+
+//Draw m
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 590, 320, 590, 350);
+SDL_RenderDrawLine(gRenderer, 590, 325, 610, 325);
+SDL_RenderDrawLine(gRenderer, 600, 325, 600, 350);
+SDL_RenderDrawLine(gRenderer, 610, 325, 610, 350);
+
+//Draw e
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 620, 325, 620, 350);
+SDL_RenderDrawLine(gRenderer, 620, 325, 640, 325);
+SDL_RenderDrawLine(gRenderer, 620, 335, 640, 335);
+SDL_RenderDrawLine(gRenderer, 620, 350, 640, 350);
+SDL_RenderDrawLine(gRenderer, 640, 325, 640, 335);
+
+//Draw r
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 650, 325, 670, 325);
+SDL_RenderDrawLine(gRenderer, 650, 320, 650, 350);
+SDL_RenderDrawLine(gRenderer, 670, 325, 670, 330);
+
+//Draw a
+SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 680, 330, 680, 347);
+SDL_RenderDrawLine(gRenderer, 680, 325, 700, 325);
+SDL_RenderDrawLine(gRenderer, 680, 330, 700, 330);
+SDL_RenderDrawLine(gRenderer, 680, 347, 700, 347);
+SDL_RenderDrawLine(gRenderer, 700, 325, 700, 350);
+
+//Draw n
+SDL_SetRenderDrawColor(gRenderer, 0x00, 0xFF, 0xFF, 0xFF);
+SDL_RenderDrawLine(gRenderer, 710, 320, 710, 350);
+SDL_RenderDrawLine(gRenderer, 710, 325, 730, 325);
+SDL_RenderDrawLine(gRenderer, 730, 325, 730, 350);
+
+//Draw g
+SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0x00, 0xFF);
+SDL_RenderDrawLine(gRenderer, 740, 330, 760, 330);
+SDL_RenderDrawLine(gRenderer, 740, 330, 740, 350);
+SDL_RenderDrawLine(gRenderer, 740, 350, 760, 350);
+SDL_RenderDrawLine(gRenderer, 740, 375, 760, 375);
+SDL_RenderDrawLine(gRenderer, 760, 325, 760, 375);*/
+
+
+ //Draw f
+ SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0xFF, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 505, 300, 505, 350);
+ SDL_RenderDrawLine(gRenderer, 520, 300, 520, 310);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 515, 325);
+ SDL_RenderDrawLine(gRenderer, 505, 300, 520, 300);
+ 
+ //Draw u
+ SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 530, 325, 530, 345);
+ SDL_RenderDrawLine(gRenderer, 550, 325, 550, 350);
+ SDL_RenderDrawLine(gRenderer, 530, 345, 550, 345);
+ 
+ //Draw c
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 560, 325, 560, 350);
+ SDL_RenderDrawLine(gRenderer, 560, 325, 580, 325);
+ SDL_RenderDrawLine(gRenderer, 560, 350, 580, 350);
+ 
+ //Draw k
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 590, 310, 590, 350);
+ SDL_RenderDrawLine(gRenderer, 590, 335, 610, 325);
+ SDL_RenderDrawLine(gRenderer, 590, 335, 610, 350);
+
+ //Draw s
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 337);
+ SDL_RenderDrawLine(gRenderer, 520, 337, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 337, 520, 337);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+ 
+ //Draw h
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 530, 310, 530, 350);
+ SDL_RenderDrawLine(gRenderer, 530, 330, 550, 330);
+ SDL_RenderDrawLine(gRenderer, 550, 330, 550, 350);
+ 
+ //Draw i
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 560, 330, 560, 350);
+ SDL_RenderDrawLine(gRenderer, 560, 320, 560, 322);
+ 
+ //Draw t
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 570, 330, 590, 330);
+ SDL_RenderDrawLine(gRenderer, 580, 320, 580, 350);
+
+//Draw d
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 520, 300, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw j
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 375, 520, 375);
+ SDL_RenderDrawLine(gRenderer, 520, 325, 520, 375);
+ SDL_RenderDrawLine(gRenderer, 520, 317, 520, 320);
+ SDL_RenderDrawLine(gRenderer, 500, 365, 500, 375);
+
+//Draw l
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 300, 500, 350);
+
+//Draw p
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 375);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 520, 325, 520, 350);
+
+//Draw q
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 520, 325, 520, 375);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 520, 375, 525, 375);
+
+//Draw v
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 510, 350);
+ SDL_RenderDrawLine(gRenderer, 510, 350, 520, 325);
+
+//Draw m
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 510, 335, 510, 350);
+ SDL_RenderDrawLine(gRenderer, 520, 325, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw x
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 325);
+
+//Draw y
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 520, 325, 520, 375);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 375, 520, 375);
+
+//Draw z
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw _
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw !
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 510, 300, 510, 340);
+ SDL_RenderDrawLine(gRenderer, 510, 347, 510, 350);
+
+//Draw [
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 300, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 300, 510, 300);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 510, 350);
+
+//Draw ]
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 520, 300, 520, 350);
+ SDL_RenderDrawLine(gRenderer, 510, 300, 520, 300);
+ SDL_RenderDrawLine(gRenderer, 510, 350, 520, 350);
+
+//Draw 1
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 500, 310, 510, 300);
+ SDL_RenderDrawLine(gRenderer, 510, 300, 510, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw 2
+ SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+ SDL_RenderDrawLine(gRenderer, 520, 300, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 500, 350);
+ SDL_RenderDrawLine(gRenderer, 500, 300, 520, 300);
+ SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+//Draw 3
+SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+SDL_RenderDrawLine(gRenderer, 520, 300, 520, 350);
+SDL_RenderDrawLine(gRenderer, 500, 300, 520, 300);
+SDL_RenderDrawLine(gRenderer, 500, 325, 520, 325);
+SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
+
+
+
+
+
+
+
+
+
+
