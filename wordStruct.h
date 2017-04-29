@@ -1,7 +1,9 @@
 /*
 *   Author: Hang-In-There
 *   File Name: wordStruct.h
-*   File Description:
+*   File Description: wordStruct contains functions that store data 
+*   associated with a word read in from the dictionary and stores the location
+*   of each letter within the word
 *   Date Created: 3/29/2017
 *   Date Last Modified: 4/30/2017
 */
