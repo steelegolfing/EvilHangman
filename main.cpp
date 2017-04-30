@@ -1,10 +1,10 @@
-//
-//  main.cpp
-//  3334 - Group Project
-//
-//  Created by Travis Cox on 3/29/17.
-//  Copyright © 2017 Travis Cox. All rights reserved.
-//
+/*
+ * Author: Hang-In-There
+ * File Name: main.cpp
+ * File Description: 
+ * Date Created: 3/29/2017
+ * Date Last Modified: 4/30/2017
+ */
 
 #include <iostream>
 #include <fstream>
