@@ -18,19 +18,19 @@
 
 using namespace std;
 
-int difficultyLevel(singleLinkedList<string> [], SDL_Event&, bool&);
+int difficultyLevel(singleLinkedList<string> [], SDL_Event&, bool&, int&);
 int randomizer(int, int, singleLinkedList<string> []);
 bool checkResponses(char&, bool[]);
 void emptyAndReInsert(singleLinkedList<string>, singleLinkedList<string>**, int);
 //int* pascal(int);
 void combinations(singleLinkedList<string>&, int, int, int, char, char[]);
-void attemptCheck(bool&, int, char[], int, int&, bool&);
-bool endGame(bool, bool);
+void attemptCheck(bool&, int, char[], int, int&, bool&, int&);
+bool endGame(bool, bool, bool&);
 
 int main(int argc, const char * argv[])
 {
     ifstream dictionaryFile;
-    int answer, size, selectionLength = 0, attempts, firstDimension, secondDimension;
+    int answer, size, selectionLength = 0, attempts, firstDimension, secondDimension, MAX_ATTEMPTS;
     singleLinkedList<string> charCount[30], gameTree, **alphaList = nullptr;
     string tempString, letterStr, answerString, incorrectGuesses = " ", evilWordString;
     bool correctAnswer, gameOver = false, responses[26] = {false}, correct[26] = {false}, victory;
@@ -38,13 +38,7 @@ int main(int argc, const char * argv[])
     const Uint8 *currentKeyStates;
     LTexture evilWord, incorrectLetters;
     
-    // Reading in the dictionary
-    dictionaryFile.open("dictionary.txt");
-    while(dictionaryFile >> tempString)
-    {
-        size = int(tempString.length());
-        charCount[size].insert(tempString);
-    }
+    
     
     string mehString = " ";
     //Start up SDL and create window
@@ -55,16 +49,19 @@ int main(int argc, const char * argv[])
     else
     {
         //Load media
-        if( !gTextTexture.loadWord("Wub", 0, 0) )
+        dictionaryFile.open("dictionary.txt") ;
+        if( !dictionaryFile.is_open())
         {
-            printf( "Failed to load media1!\n" );
-        }
-        else if (!incorrectLetters.loadWord(mehString, 0, 0))
-        {
-            printf("Failed to load media2!\n");
+            printf( "Failed to load dictionary!!\n" );
         }
         else
         {
+            // Reading in the dictionary
+            while(dictionaryFile >> tempString)
+            {
+                size = int(tempString.length());
+                charCount[size].insert(tempString);
+            }
             
             //Main loop flag
             bool quit = false;
@@ -72,15 +69,14 @@ int main(int argc, const char * argv[])
             //Event handler
             SDL_Event e;
             
-            while (!gameOver)
+            while (!gameOver && !quit)
             {
                 //gameOver = false;
                 victory = false;
                 correctAnswer = false;
                 attempts = 0;
-                selectionLength = difficultyLevel(charCount, e, quit);
+                selectionLength = difficultyLevel(charCount, e, quit, MAX_ATTEMPTS);
                 
-                //cout << "The word will be length: " << selectionLength << endl;
                 singleLinkedList<string> tempTree(charCount[selectionLength]);
                 alphaList = new singleLinkedList<string>*[26];
                 for (int i = 0; i < 26; i++)
@@ -94,7 +90,6 @@ int main(int argc, const char * argv[])
                     guessesArray[i] = '_';
                 }
                 guessesArray[selectionLength] = '\0';
-                //cout << guessesArray << endl;
                 for (int i = 0; i < 26; i++)
                 {
                     responses[i] = false;
@@ -106,30 +101,17 @@ int main(int argc, const char * argv[])
                 for (int i = 0; i < selectionLength; i++)
                 {
                     evilWordString = evilWordString + guessesArray[i];
-                    //evilWordString = evilWordString + " ";
                 }
                 
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                 SDL_RenderClear(gRenderer);
                 evilWord.loadWord(evilWordString, 0, ((SCREEN_HEIGHT/4)*3));
-                //evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
                 incorrectLetters.loadWord(incorrectGuesses, 50, 50);
                 renderHangman(gRenderer, attempts);
-                //incorrectLetters.render(50, 50);
                 SDL_RenderPresent(gRenderer);
                 
                 while(!gameOver && !victory)
                 {
-                    /*do
-                    {
-                        cout << "Enter a letter: " << endl;
-                        cin >> letterStr;
-                        tempChar = letterStr[0];
-                    }while(!checkResponses(tempChar, responses));*/
-                    
-                    
-                    
-                    //cout << "While loop" << endl;
                     do
                     {
                         key = '\0';
@@ -200,18 +182,7 @@ int main(int argc, const char * argv[])
                     {
                         //responses[(key) - 'a'] = true;
                         incorrectGuesses = incorrectGuesses + key;
-                        //incorrectGuesses = incorrectGuesses + " ";
                     }
-                    //cout << "Incorrect guesses: " << incorrectGuesses << endl;
-                    /*cout << "Incorrect guesses: ";
-                    for (int i = 0; i < 26; i++)
-                    {
-                        if (responses[i] && !correct[i])
-                        {
-                            //cout << char(i + 'a') << " ";
-                        }
-                    }
-                    cout << endl;*/
                     swap(tempTree, alphaList[firstDimension][answer]);
                     if (tempTree.getSize() == 1)
                     {
@@ -230,50 +201,44 @@ int main(int argc, const char * argv[])
                     }
                     emptyAndReInsert(tempTree, alphaList, selectionLength);
                     
-                    attemptCheck(victory, selectionLength, guessesArray, answer, attempts, gameOver);
+                    attemptCheck(victory, selectionLength, guessesArray, answer, attempts, gameOver, MAX_ATTEMPTS);
                     
                     evilWordString = "";
                     for (int i = 0; i < selectionLength; i++)
                     {
                         evilWordString = evilWordString + guessesArray[i];
-                        //evilWordString = evilWordString + " ";
                     }
                     
                     SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                     SDL_RenderClear(gRenderer);
                     evilWord.loadWord(evilWordString, 0, ((SCREEN_HEIGHT/4)*3));
-                    //evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
                     incorrectLetters.loadWord(incorrectGuesses, 50, 50);
                     
                     renderHangman(gRenderer, attempts);
-                    
-                    //incorrectLetters.render(50, 50);
                     SDL_RenderPresent(gRenderer);
-                    if (attempts == 12)
+                    if (attempts == MAX_ATTEMPTS)
                     {
-                        SDL_Delay(10000);
+                        SDL_Delay(1500);
                     }
                 }
                 
                 incorrectLetters.free();
                 evilWord.free();
                 SDL_RenderClear(gRenderer);
-                gameOver = endGame(victory, gameOver);
+                gameOver = endGame(victory, gameOver, quit);
             }
 
         }
     }
     
-    
-    
-    
+  
     //Free resources and close SDL
     close();
     
     return 0;
 }
 
-int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit)
+int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit, int& MAX_ATTEMPTS)
 {
     bool correctAnswer = false;
     string letterStr;
@@ -281,14 +246,10 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
     LTexture difficulty;
     const Uint8 *currentKeyStates;
     char key;
-    //cout << "difficulty.loadWord" << endl;
     SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(gRenderer);
-    //difficulty.loadWord("Would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
-    while (!correctAnswer)
+    while (!correctAnswer && !quit)
     {
-        
-        SDL_RenderPresent(gRenderer);
         while( SDL_PollEvent( &e ) != 0 )
         {
             //User requests quit
@@ -308,35 +269,29 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
                 switch (key)
                 {
                     case '1':
-                        //cout << "You have chosen beginner! (words 2-5 letters in length)" << endl;
                         correctAnswer = true;
-                        selectionLength = randomizer(2, 5, charCount);
+                        selectionLength = randomizer(11,29, charCount);
+                        MAX_ATTEMPTS = 7;
                         break;
                     case '2':
-                        //cout << "You have chosen intermediate! (words 6-10 letters in length)" << endl;
                         correctAnswer = true;
                         selectionLength = randomizer(6, 10, charCount);
+                        MAX_ATTEMPTS = 9;
                         break;
                     case '3':
-                        //cout << "You have chosen advanced! (words 11+ letters in length)" << endl;
                         correctAnswer = true;
-                        selectionLength = randomizer(11, 29, charCount);
-                        break;
-                    default:
-                        //cout << "Incorrect response!" << endl;
+                        selectionLength = randomizer(2, 5, charCount);
+                        MAX_ATTEMPTS = 12;
                         break;
                 }
 
             }
         }
         
-        //difficulty.loadWord("Would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
-        //SDL_RenderPresent(gRenderer);
-        
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         difficulty.loadWord("would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
-        //SDL_RenderPresent(gRenderer);
+        SDL_RenderPresent(gRenderer);
     }
 
     difficulty.free();
@@ -444,7 +399,6 @@ void combinations(singleLinkedList<string> &gameTree, int beginning, int stringL
     
     for (int j = beginning; j < stringLength; j++)
     {
-        //cout << "Location: " << j << "\t" << combos[j].getSize() << endl;
         if (combos[j].getSize() > biggest)
         {
             answer = j;
@@ -462,12 +416,11 @@ void combinations(singleLinkedList<string> &gameTree, int beginning, int stringL
     }
 }
 
-void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int answer, int &attempts, bool &gameOver)
+void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int answer, int &attempts, bool &gameOver, int& MAX_ATTEMPTS)
 {
     victory = true;
     for (int i = 0; i < selectionLength; i++)
     {
-        //cout << guessesArray[i] << " ";
         if (guessesArray[i] == '_')
         {
             victory = false;
@@ -479,62 +432,43 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
         attempts++;
     }
     
-    //cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
-    if (attempts >= 12)
+    if (attempts >= MAX_ATTEMPTS)
     {
         gameOver = true;
     }
 }
 
-bool endGame(bool victory, bool gameOver)
+bool endGame(bool victory, bool gameOver, bool &quit)
 {
     string letterStr;
     char key = '\0';
     bool correctAnswer = false;
     const Uint8 *currentKeyStates;
     LTexture endOfGame, question;
-    /*SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-    SDL_RenderClear(gRenderer);
-    if (victory)
-    {
-        endOfGame.loadWord("congratulations!!! you saved the hangman!!", 0, (SCREEN_HEIGHT/2));
-        //cout << "Congratulations!!! You saved the hangman!!" << endl;
-    }
-    else
-    {
-        endOfGame.loadWord("game over!! murderer!!!!!", 0, (SCREEN_HEIGHT/2));
-        //cout << "Game over!! Murderer!!!!!" << endl;
-    }*/
     
-    //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
-    //SDL_RenderClear(gRenderer);
-    //SDL_RenderPresent(gRenderer);
-    
-    while (!correctAnswer)
+    while (!correctAnswer && !quit)
     {
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0x00);
         SDL_RenderClear(gRenderer);
         if (victory)
         {
             endOfGame.loadWord("congratulations!!! you saved the hangman!!", 0, (SCREEN_HEIGHT/2));
-            //cout << "Congratulations!!! You saved the hangman!!" << endl;
         }
         else
         {
             endOfGame.loadWord("game over!! murderer!!!!!", 0, (SCREEN_HEIGHT/2));
-            //cout << "Game over!! Murderer!!!!!" << endl;
         }
         question.loadWord("would you like to play again? (y/n)", 0, ((SCREEN_HEIGHT/2)+50));
-        //SDL_RenderClear(gRenderer);
-        //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
-        //question.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, ((SCREEN_HEIGHT - endOfGame.getHeight()) / 2) + endOfGame.getHeight());
+
         SDL_RenderPresent(gRenderer);
-        //cout << "Would you like to play again? (y/n)" << endl;
-        //cin >> letterStr;
-        //tempChar = letterStr[0];
         SDL_Event e;
         while (SDL_PollEvent(&e) != 0)
         {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                quit = true;
+            }
             if (e.type == SDL_KEYDOWN)
             {
                 key = '\0';
@@ -553,6 +487,7 @@ bool endGame(bool victory, bool gameOver)
             {
                 gameOver = true;
                 correctAnswer = true;
+                quit = true;
             }
         }
     }
