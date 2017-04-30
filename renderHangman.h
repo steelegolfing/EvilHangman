@@ -276,6 +276,7 @@ private:
         }
         
         //draw mouth
+        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
         SDL_RenderDrawLine(gRenderer, (tempWidth-352), 130, (tempWidth-352), 140);
         SDL_RenderDrawLine(gRenderer, (tempWidth-352), 140, (tempWidth-327), 140);
         SDL_RenderDrawLine(gRenderer, (tempWidth-327), 130, (tempWidth-327), 140);
