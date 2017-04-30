@@ -22,7 +22,6 @@ int difficultyLevel(singleLinkedList<string> [], SDL_Event&, bool&, int&);
 int randomizer(int, int, singleLinkedList<string> []);
 bool checkResponses(char&, bool[]);
 void emptyAndReInsert(singleLinkedList<string>, singleLinkedList<string>**, int);
-//int* pascal(int);
 void combinations(singleLinkedList<string>&, int, int, int, char, char[]);
 void attemptCheck(bool&, int, char[], int, int&, bool&, int&);
 bool endGame(bool, bool, bool&);
@@ -238,6 +237,15 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
+/*
+*   function: difficultyLevel
+*   description: draws prompt for user to decide difficulty/ randomly decides word length based 
+*   on user input for difficulty 
+*   precondition: an SDL instance exists and game mode has begun
+*   postcondition: a word length has been decided
+*   return: int-word length
+*/
+
 int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit, int& MAX_ATTEMPTS)
 {
     bool correctAnswer = false;
@@ -299,6 +307,15 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
     return selectionLength;
 }
 
+
+/*
+*   function: randomizer
+*   description: determines the length of word based off of a given range
+*   precondition: user has selected difficulty level associated with range of word lengths
+*   postcondition: a word length has been decided
+*   return: int-word length
+*/
+
 int randomizer(int begin, int end, singleLinkedList<string> array[])
 {
     int selection;
@@ -314,6 +331,15 @@ int randomizer(int begin, int end, singleLinkedList<string> array[])
     
     return selection;
 }
+
+/*
+*   function: checkResponses
+*   description: confirms if guess is a valid entry or if letter has
+*   already been guessed
+*   precondition: a guess has been entered by the user
+*   postcondition: the validity of the guess has been determined
+*   return: bool-if guess is valid or not
+*/
 
 bool checkResponses(char& selection, bool responses[])
 {
@@ -343,6 +369,15 @@ bool checkResponses(char& selection, bool responses[])
     }
 }
 
+/*
+*   function: emptryAndReInsert
+*   description: inserts all strings in singlely linked list into a 2d array bassed on
+*   number of each letter present in the word
+*   precondition: a singely linked list exists containing the largest set
+*   postcondition: a 2d array is constructed organized by number of each letter in a word
+*   return: void
+*/ 
+
 void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string> **array, int length)
 {
     string tempString;
@@ -359,26 +394,14 @@ void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string>
     }
 }
 
-/*int* pascal(int row)
-{
-    int *triangleRow = new int[row+1];
-    triangleRow[0] = 1;
-    if (row <= 0)
-    {
-        return triangleRow;
-    }
-    triangleRow[row] = 1;
-    int* triangleRow2 = pascal(row-1);
-    
-    for (int i = 1; i < row; i++)
-    {
-        triangleRow[i] = (triangleRow2[i] + triangleRow2[i-1]);
-    }
-    
-    delete triangleRow2;
-    
-    return triangleRow;
-}*/
+/*
+*   function: combinations
+*   description: determines the largest set of words with more than one of a particular 
+*   letter
+*   precondition: a linked list exists
+*   postcondition: the largest set from the list is determined
+*   return: void
+*/
 
 void combinations(singleLinkedList<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
 {
@@ -416,6 +439,14 @@ void combinations(singleLinkedList<string> &gameTree, int beginning, int stringL
     }
 }
 
+/*
+*   function: attemptCheck
+*   description: checks the current number of attempts and determines if game is over
+*   precondition: a game instance is in play
+*   postcondition: it is determined whether the game should continue
+*   return: void
+*/
+
 void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int answer, int &attempts, bool &gameOver, int& MAX_ATTEMPTS)
 {
     victory = true;
@@ -437,6 +468,14 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
         gameOver = true;
     }
 }
+
+/*
+*   function: endGame
+*   description: finishes current game and ends game based on user input 
+*   precondition: a game has been won or lost
+*   postcondition: game is restarted or ended
+*   return: bool-state of game
+*/ 
 
 bool endGame(bool victory, bool gameOver, bool &quit)
 {
