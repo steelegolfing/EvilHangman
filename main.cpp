@@ -249,6 +249,10 @@ int main(int argc, const char * argv[])
                     
                     //incorrectLetters.render(50, 50);
                     SDL_RenderPresent(gRenderer);
+                    if (attempts == 12)
+                    {
+                        SDL_Delay(10000);
+                    }
                 }
                 
                 incorrectLetters.free();
@@ -347,7 +351,7 @@ int randomizer(int begin, int end, singleLinkedList<string> array[])
     srand(time(NULL));
     selection = rand() % (end-begin);
     selection += begin;
-    while (selection < begin && (array[selection].getSize() > 0))
+    while (selection < begin && (array[selection].getSize() == 0))
     {
         selection = (rand() % (end-begin));
         selection += begin;

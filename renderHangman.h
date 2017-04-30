@@ -193,9 +193,9 @@ private:
         tempRect.x = tempWidth-376;
         tempRect.y = 240;
         tempRect.w = 36;
-        tempRect.h = 90;
+        tempRect.h = 80;
         SDL_Surface *tempSurface;
-        tempSurface = SDL_CreateRGBSurface(0, 36, 90, 32, 0, 0, 0, 0xFF);
+        tempSurface = SDL_CreateRGBSurface(0, 36, 80, 32, 0, 0, 0, 0xFF);
         SDL_FillRect(tempSurface, &tempRect, SDL_MapRGB( tempSurface->format, 0x99, 0x00, 0xCC));
         SDL_RenderFillRect(gRenderer, &tempRect);
     }
@@ -218,9 +218,9 @@ private:
         tempRect.x = tempWidth-339;
         tempRect.y = 240;
         tempRect.w = 36;
-        tempRect.h = 90;
+        tempRect.h = 80;
         SDL_Surface *tempSurface;
-        tempSurface = SDL_CreateRGBSurface(0, 36, 90, 32, 0, 0, 0, 0xFF);
+        tempSurface = SDL_CreateRGBSurface(0, 36, 80, 32, 0, 0, 0, 0xFF);
         SDL_FillRect(tempSurface, &tempRect, SDL_MapRGB( tempSurface->format, 0x99, 0x00, 0xCC));
         SDL_RenderFillRect(gRenderer, &tempRect);
     }
@@ -276,7 +276,9 @@ private:
         }
         
         //draw mouth
-        
+        SDL_RenderDrawLine(gRenderer, (tempWidth-352), 130, (tempWidth-352), 140);
+        SDL_RenderDrawLine(gRenderer, (tempWidth-352), 140, (tempWidth-327), 140);
+        SDL_RenderDrawLine(gRenderer, (tempWidth-327), 130, (tempWidth-327), 140);
     }
     
     /*
@@ -288,13 +290,28 @@ private:
      */
     void drawLHand()
     {
+        int tempWidth = SCREEN_WIDTH - 40;
         //draws rest of body parts
         drawFace();
-        /*//draw left hand
+        //draw left hand
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();*/
+        SDL_RenderDrawLine(gRenderer, tempWidth-396, 235, tempWidth-388, 235);
+        SDL_RenderDrawLine(gRenderer, tempWidth-396, 236, tempWidth-388, 236);
+        SDL_RenderDrawLine(gRenderer, tempWidth-396, 237, tempWidth-388, 237);
+        SDL_RenderDrawLine(gRenderer, tempWidth-396, 238, tempWidth-388, 238);
+        SDL_RenderDrawLine(gRenderer, tempWidth-396, 239, tempWidth-388, 239);
+        SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+        SDL_RenderDrawLine(gRenderer, tempWidth-397, 235, tempWidth-397, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-387, 235, tempWidth-387, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-407, 240, tempWidth-397, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-387, 240, tempWidth-377, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-407, 240, tempWidth-407, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-377, 240, tempWidth-377, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-407, 250, tempWidth-402, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-382, 250, tempWidth-377, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-402, 245, tempWidth-402, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-382, 245, tempWidth-382, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-402, 245, tempWidth-382, 245);
     }
     /*
      * function: drawRHand
@@ -305,13 +322,28 @@ private:
      */
     void drawRHand()
     {
+        int tempWidth = SCREEN_WIDTH - 40;
         //draws rest of body parts
         drawLHand();
-        /*//draw right hand
+        //draw right hand
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();*/
+        SDL_RenderDrawLine(gRenderer, tempWidth-292, 235, tempWidth-284, 235);
+        SDL_RenderDrawLine(gRenderer, tempWidth-292, 236, tempWidth-284, 236);
+        SDL_RenderDrawLine(gRenderer, tempWidth-292, 237, tempWidth-284, 237);
+        SDL_RenderDrawLine(gRenderer, tempWidth-292, 238, tempWidth-284, 238);
+        SDL_RenderDrawLine(gRenderer, tempWidth-292, 239, tempWidth-284, 239);
+        SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+        SDL_RenderDrawLine(gRenderer, tempWidth-293, 235, tempWidth-293, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-283, 235, tempWidth-283, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-303, 240, tempWidth-293, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-283, 240, tempWidth-273, 240);
+        SDL_RenderDrawLine(gRenderer, tempWidth-303, 240, tempWidth-303, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-273, 240, tempWidth-273, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-303, 250, tempWidth-298, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-278, 250, tempWidth-273, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-298, 245, tempWidth-298, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-278, 245, tempWidth-278, 250);
+        SDL_RenderDrawLine(gRenderer, tempWidth-298, 245, tempWidth-278, 245);
     }
     /*
      * function: drawLFoot
@@ -322,14 +354,20 @@ private:
      */
     void drawLFoot()
     {
+        int tempWidth = SCREEN_WIDTH - 40;
         //draws rest of body parts
         drawRHand();
-        /*//draw left foot
-        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();*/
+        //draw left foot
+        SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+        SDL_Rect tempRect;
+        tempRect.x = tempWidth-376;
+        tempRect.y = 320;
+        tempRect.w = 36;
+        tempRect.h = 20;
+        SDL_Surface *tempSurface;
+        tempSurface = SDL_CreateRGBSurface(0, 36, 20, 32, 0, 0, 0, 0xFF);
+        SDL_FillRect(tempSurface, &tempRect, SDL_MapRGB( tempSurface->format, 0x99, 0x00, 0xCC));
+        SDL_RenderFillRect(gRenderer, &tempRect);
     }
     
     /*
@@ -341,14 +379,20 @@ private:
      */
     void drawRFoot()
     {
+        int tempWidth = SCREEN_WIDTH - 40;
         //draws rest of body parts
         drawLFoot();
-        /*//draw right foot
-        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();*/
+        //draw right foot
+        SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+        SDL_Rect tempRect;
+        tempRect.x = tempWidth-339;
+        tempRect.y = 320;
+        tempRect.w = 36;
+        tempRect.h = 20;
+        SDL_Surface *tempSurface;
+        tempSurface = SDL_CreateRGBSurface(0, 36, 20, 32, 0, 0, 0, 0xFF);
+        SDL_FillRect(tempSurface, &tempRect, SDL_MapRGB( tempSurface->format, 0x99, 0x00, 0xCC));
+        SDL_RenderFillRect(gRenderer, &tempRect);
     }
     
     /*
@@ -360,16 +404,42 @@ private:
      */
     void drawTie()
     {
+        int tempWidth = SCREEN_WIDTH - 40;
         //draws rest of body parts
         drawRFoot();
-        /*//draw hangmans bowtie
-        DL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();
-        SDL_RenderDrawLine();*/
+        //draw hangmans tie
+        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x99, 0x33, 0xFF);
+        for (int i = 5; i >= 0; i--)
+        {
+            for(int j = i; j >= 0; j--)
+            {
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)+j, 155-i);
+                
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)-j, 155-i);
+            }
+        }
+        
+        for(int i = 1; i <= 40; i++)
+        {
+            for(int j = 0; j < i; j++)
+            {
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)+(j*.25), 155+i);
+        
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)-(j*.25), 155+i);
+            }
+        }
+        
+        for (int i = 10; i >= 0; i--)
+        {
+            for(int j = i; j >= 0; j--)
+            {
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)+j, 205-i);
+                
+                SDL_RenderDrawPoint(gRenderer, (tempWidth-340)-j, 205-i);
+            }
+        }
+        
+        //SDL_Delay(20000);
     }
 public:
     renderHangman(SDL_Renderer* g, int attempts)
