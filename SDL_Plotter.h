@@ -12,8 +12,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2_mixer/SDL_mixer.h>
 #include <SDL2/SDL_thread.h>
-#include <SDL2_ttf/SDL_ttf.h>
-#include <SDL2_image/SDL_image.h>
+//#include <SDL2_ttf/SDL_ttf.h>
+//#include <SDL2_image/SDL_image.h>
 
 //Windows Library
 //#include <SDL2/SDL.h>
@@ -24,6 +24,8 @@
 #include <string>
 #include <string.h>
 #include <map>
+#include "renderLetters.h"
+#include "renderHangman.h"
 using namespace std;
 
 const char UP_ARROW    = 1;
@@ -106,7 +108,7 @@ public:
     int getWidth();
     int getHeight();
     
-    bool loadMedia(string);
+    bool loadWord(string, int, int);
     
     char getKey();
     
@@ -125,7 +127,7 @@ private:
 bool init();
 
 //Loads media
-bool loadMedia();
+bool loadWord();
 
 //Frees media and shuts down SDL
 void close();
@@ -137,7 +139,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 //Globally used font
-TTF_Font *gFont = NULL;
+//TTF_Font *gFont = NULL;
 
 //Rendered texture
 LTexture gTextTexture;
@@ -158,7 +160,7 @@ LTexture::~LTexture()
     free();
 }
 
-bool LTexture::loadFromFile( std::string path )
+/*bool LTexture::loadFromFile( std::string path )
 {
     //Get rid of preexisting texture
     free();
@@ -197,7 +199,7 @@ bool LTexture::loadFromFile( std::string path )
     //Return success
     mTexture = newTexture;
     return mTexture != NULL;
-}
+}*/
 
 bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
 {
@@ -205,7 +207,7 @@ bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColo
     free();
     
     //Render text surface
-    SDL_Surface* textSurface = TTF_RenderText_Blended( gFont, textureText.c_str(), textColor );
+    /*SDL_Surface* textSurface = TTF_RenderText_Blended( gFont, textureText.c_str(), textColor );
     if( textSurface == NULL )
     {
         printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -227,7 +229,7 @@ bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColo
         
         //Get rid of old surface
         SDL_FreeSurface( textSurface );
-    }
+    }*/
     
     //Return success
     return mTexture != NULL;
@@ -327,10 +329,10 @@ bool init()
             else
             {
                 //Initialize renderer color
-                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0xFF, 0xFF );
                 
                 //Initialize PNG loading
-                int imgFlags = IMG_INIT_PNG;
+                /*int imgFlags = IMG_INIT_PNG;
                 if( !( IMG_Init( imgFlags ) & imgFlags ) )
                 {
                     printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
@@ -342,7 +344,7 @@ bool init()
                 {
                     printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
                     success = false;
-                }
+                }*/
             }
         }
     }
@@ -350,13 +352,13 @@ bool init()
     return success;
 }
 
-bool LTexture::loadMedia(string tempString)
+bool LTexture::loadWord(string tempString, int x, int y)
 {
     //Loading success flag
     bool success = true;
     
     //Open the font
-    gFont = TTF_OpenFont( "precious.ttf", 28 );
+    /*gFont = TTF_OpenFont( "precious.ttf", 28 );
     if( gFont == NULL )
     {
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -371,7 +373,9 @@ bool LTexture::loadMedia(string tempString)
             printf( "Failed to render text texture!\n" );
             success = false;
         }
-    }
+    }*/
+    
+    renderLetters newRender(tempString, x, y, gRenderer);
     
     return success;
 }
@@ -436,8 +440,8 @@ void close()
     //incorrectLetters.free();
     
     //Free global font
-    TTF_CloseFont( gFont );
-    gFont = NULL;
+    //TTF_CloseFont( gFont );
+    //gFont = NULL;
     
     //Destroy window
     SDL_DestroyRenderer( gRenderer );
@@ -446,8 +450,8 @@ void close()
     gRenderer = NULL;
     
     //Quit SDL subsystems
-    TTF_Quit();
-    IMG_Quit();
+    //TTF_Quit();
+    //IMG_Quit();
     SDL_Quit();
 }
 
@@ -670,7 +674,7 @@ static int Sound(void *data){
 
 #endif /* SDL_PLOTTER_H_ */
 
-
+/*
 //Draw b
 SDL_SetRenderDrawColor(gRenderer, 0x80, 0xFF, 0xFF, 0xFF);
 SDL_RenderDrawLine(gRenderer, 500, 300, 500, 350);
@@ -733,8 +737,7 @@ SDL_RenderDrawLine(gRenderer, 740, 330, 760, 330);
 SDL_RenderDrawLine(gRenderer, 740, 330, 740, 350);
 SDL_RenderDrawLine(gRenderer, 740, 350, 760, 350);
 SDL_RenderDrawLine(gRenderer, 740, 375, 760, 375);
-SDL_RenderDrawLine(gRenderer, 760, 325, 760, 375);*/
-
+SDL_RenderDrawLine(gRenderer, 760, 325, 760, 375);
 
  //Draw f
  SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0xFF, 0xFF);
@@ -892,7 +895,7 @@ SDL_RenderDrawLine(gRenderer, 500, 350, 520, 350);
 
 
 
-
+*/
 
 
 

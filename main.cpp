@@ -1,11 +1,10 @@
-/*
-*   Author: Hang-In-There
-*   File Name: main.cpp
-*   File Description: This file is where the instance of each game runs. 
-*   User input is processed and the screen is update accordingly. 
-*   Date Created: 3/29/2017
-*   Date Last Modified: 4/30/2017
-*/
+//
+//  main.cpp
+//  3334 - Group Project
+//
+//  Created by Travis Cox on 3/29/17.
+//  Copyright © 2017 Travis Cox. All rights reserved.
+//
 
 #include <iostream>
 #include <fstream>
@@ -56,11 +55,11 @@ int main(int argc, const char * argv[])
     else
     {
         //Load media
-        if( !gTextTexture.loadMedia("Wub") )
+        if( !gTextTexture.loadWord("Wub", 0, 0) )
         {
             printf( "Failed to load media1!\n" );
         }
-        else if (!incorrectLetters.loadMedia(mehString))
+        else if (!incorrectLetters.loadWord(mehString, 0, 0))
         {
             printf("Failed to load media2!\n");
         }
@@ -73,54 +72,6 @@ int main(int argc, const char * argv[])
             //Event handler
             SDL_Event e;
             
-            //selectionLength = difficultyLevel(charCount, e, quit);
-            
-            //While application is running
-            /*while( !quit )
-            {
-                if (selectionLength == 0)
-                {
-                    //selectionLength = difficultyLevel(charCount, e, quit);
-                }
-                
-                
-                
-                //Handle events on queue
-                while( SDL_PollEvent( &e ) != 0 )
-                {
-                    //User requests quit
-                    if( e.type == SDL_QUIT )
-                    {
-                        quit = true;
-                    }
-                    if (e.type == SDL_KEYDOWN)
-                    {
-                        //gTextTexture.loadMedia("Wub-a-lub-a-rub-rub!!");
-                        //mehString = mehString + " ";
-                        //mehString = mehString + incorrectLetters.getKey();
-                        //incorrectLetters.loadMedia(guessesArray);
-                    }
-                    if (e.type == SDL_KEYUP)
-                    {
-                        //gTextTexture.loadMedia("Supercalafragalisticexpialidocious!!");
-                    }
-                }
-                
-                
-                
-                //Clear screen
-                SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF );
-                SDL_RenderClear( gRenderer );
-                
-                //Render current frame
-                //gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, ( SCREEN_HEIGHT - gTextTexture.getHeight() ) - 100);
-                //incorrectLetters.render(50, 50);
-                
-                //Update screen
-                SDL_RenderPresent( gRenderer );
-            }*/
-            
-            //runs until game instance is finished
             while (!gameOver)
             {
                 //gameOver = false;
@@ -143,7 +94,7 @@ int main(int argc, const char * argv[])
                     guessesArray[i] = '_';
                 }
                 guessesArray[selectionLength] = '\0';
-                cout << guessesArray << endl;
+                //cout << guessesArray << endl;
                 for (int i = 0; i < 26; i++)
                 {
                     responses[i] = false;
@@ -155,15 +106,16 @@ int main(int argc, const char * argv[])
                 for (int i = 0; i < selectionLength; i++)
                 {
                     evilWordString = evilWordString + guessesArray[i];
-                    evilWordString = evilWordString + " ";
+                    //evilWordString = evilWordString + " ";
                 }
                 
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                 SDL_RenderClear(gRenderer);
-                evilWord.loadMedia(evilWordString);
-                evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
-                incorrectLetters.loadMedia(incorrectGuesses);
-                incorrectLetters.render(50, 50);
+                evilWord.loadWord(evilWordString, 0, ((SCREEN_HEIGHT/4)*3));
+                //evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
+                incorrectLetters.loadWord(incorrectGuesses, 50, 50);
+                renderHangman(gRenderer, attempts);
+                //incorrectLetters.render(50, 50);
                 SDL_RenderPresent(gRenderer);
                 
                 while(!gameOver && !victory)
@@ -176,8 +128,8 @@ int main(int argc, const char * argv[])
                     }while(!checkResponses(tempChar, responses));*/
                     
                     
-                   
-                    //keeps screen open until user requests exit
+                    
+                    //cout << "While loop" << endl;
                     do
                     {
                         key = '\0';
@@ -248,7 +200,7 @@ int main(int argc, const char * argv[])
                     {
                         //responses[(key) - 'a'] = true;
                         incorrectGuesses = incorrectGuesses + key;
-                        incorrectGuesses = incorrectGuesses + " ";
+                        //incorrectGuesses = incorrectGuesses + " ";
                     }
                     //cout << "Incorrect guesses: " << incorrectGuesses << endl;
                     /*cout << "Incorrect guesses: ";
@@ -260,7 +212,6 @@ int main(int argc, const char * argv[])
                         }
                     }
                     cout << endl;*/
-                    //after selecting largest set, replaces temp tree with largest subset
                     swap(tempTree, alphaList[firstDimension][answer]);
                     if (tempTree.getSize() == 1)
                     {
@@ -285,15 +236,18 @@ int main(int argc, const char * argv[])
                     for (int i = 0; i < selectionLength; i++)
                     {
                         evilWordString = evilWordString + guessesArray[i];
-                        evilWordString = evilWordString + " ";
+                        //evilWordString = evilWordString + " ";
                     }
                     
                     SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                     SDL_RenderClear(gRenderer);
-                    evilWord.loadMedia(evilWordString);
-                    evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
-                    incorrectLetters.loadMedia(incorrectGuesses);
-                    incorrectLetters.render(50, 50);
+                    evilWord.loadWord(evilWordString, 0, ((SCREEN_HEIGHT/4)*3));
+                    //evilWord.render((SCREEN_WIDTH-evilWord.getWidth()) / 2, ((SCREEN_HEIGHT-evilWord.getHeight()) / 4) * 3);
+                    incorrectLetters.loadWord(incorrectGuesses, 50, 50);
+                    
+                    renderHangman(gRenderer, attempts);
+                    
+                    //incorrectLetters.render(50, 50);
                     SDL_RenderPresent(gRenderer);
                 }
                 
@@ -315,27 +269,22 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
-/*
-*   function: difficultyLevel
-*   description: draws prompt for user to decide difficulty/ randomly decides word length based 
-*   on user input for difficulty 
-*   precondition: an SDL instance exists and game mode has begun
-*   postcondition: a word length has been decided
-*   return: int-word length
-*/
-
 int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &quit)
 {
     bool correctAnswer = false;
     string letterStr;
-    int answer, selectionLength = 0;
+    int selectionLength = 0;
     LTexture difficulty;
     const Uint8 *currentKeyStates;
     char key;
-    //cout << "difficulty.loadMedia" << endl;
-    difficulty.loadMedia("Would you like beginner(1), intermediate(2), or advanced(3)?");
+    //cout << "difficulty.loadWord" << endl;
+    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(gRenderer);
+    //difficulty.loadWord("Would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
     while (!correctAnswer)
     {
+        
+        SDL_RenderPresent(gRenderer);
         while( SDL_PollEvent( &e ) != 0 )
         {
             //User requests quit
@@ -377,24 +326,19 @@ int difficultyLevel(singleLinkedList<string> charCount[], SDL_Event &e, bool &qu
             }
         }
         
+        //difficulty.loadWord("Would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
+        //SDL_RenderPresent(gRenderer);
+        
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
-        difficulty.render((SCREEN_WIDTH - difficulty.getWidth()) / 2, (SCREEN_HEIGHT - difficulty.getHeight()) / 2);
-        SDL_RenderPresent(gRenderer);
+        difficulty.loadWord("would you like beg(1), int(2), or adv(3)?", 0, (SCREEN_HEIGHT/2));
+        //SDL_RenderPresent(gRenderer);
     }
 
     difficulty.free();
     
     return selectionLength;
 }
-
-/*
-*   function: randomizer
-*   description: determines the length of word based off of a given range
-*   precondition: user has selected difficulty level associated with range of word lengths
-*   postcondition: a word length has been decided
-*   return: int-word length
-*/
 
 int randomizer(int begin, int end, singleLinkedList<string> array[])
 {
@@ -411,15 +355,6 @@ int randomizer(int begin, int end, singleLinkedList<string> array[])
     
     return selection;
 }
-
-/*
-*   function: checkResponses
-*   description: confirms if guess is a valid entry or if letter has
-*   already been guessed
-*   precondition: a guess has been entered by the user
-*   postcondition: the validity of the guess has been determined
-*   return: bool-if guess is valid or not
-*/
 
 bool checkResponses(char& selection, bool responses[])
 {
@@ -448,15 +383,6 @@ bool checkResponses(char& selection, bool responses[])
         return !responses[selection - temp];
     }
 }
-
-/*
-*   function: emptryAndReInsert
-*   description: inserts all strings in singlely linked list into a 2d array bassed on
-*   number of each letter present in the word
-*   precondition: a singely linked list exists containing the largest set
-*   postcondition: a 2d array is constructed organized by number of each letter in a word
-*   return: void
-*/
 
 void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string> **array, int length)
 {
@@ -495,15 +421,6 @@ void emptyAndReInsert(singleLinkedList<string> oldTree, singleLinkedList<string>
     return triangleRow;
 }*/
 
-/*
-*   function: combinations
-*   description: determines the largest set of words with more than one of a particular 
-*   letter
-*   precondition: a linked list exists
-*   postcondition: the largest set from the list is determined
-*   return: void
-*/
-
 void combinations(singleLinkedList<string> &gameTree, int beginning, int stringLength, int numberOfLetters, char c, char guessesArray[])
 {
     singleLinkedList<string> combos[stringLength];
@@ -541,14 +458,6 @@ void combinations(singleLinkedList<string> &gameTree, int beginning, int stringL
     }
 }
 
-/*
-*   function: attemptCheck
-*   description: checks the current number of attempts and determines if game is over
-*   precondition: a game instance is in play
-*   postcondition: it is determined whether the game should continue
-*   return: void
-*/
-
 void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int answer, int &attempts, bool &gameOver)
 {
     victory = true;
@@ -565,6 +474,7 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
     {
         attempts++;
     }
+    
     //cout << endl << "You have " << (12 - attempts) << " attempts remaining!!!" << endl;
     if (attempts >= 12)
     {
@@ -572,42 +482,48 @@ void attemptCheck(bool &victory, int selectionLength, char guessesArray[], int a
     }
 }
 
-/*
-*   function: endGame
-*   description: finishes current game and ends game based on user input 
-*   precondition: a game has been won or lsot
-*   postcondition: game is restarted or ended
-*   return: bool-state of game
-*/
-
 bool endGame(bool victory, bool gameOver)
 {
     string letterStr;
-    char tempChar, key = '\0';
+    char key = '\0';
     bool correctAnswer = false;
     const Uint8 *currentKeyStates;
     LTexture endOfGame, question;
+    /*SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
+    SDL_RenderClear(gRenderer);
     if (victory)
     {
-        endOfGame.loadMedia("Congratulations!!! You saved the hangman!!");
+        endOfGame.loadWord("congratulations!!! you saved the hangman!!", 0, (SCREEN_HEIGHT/2));
         //cout << "Congratulations!!! You saved the hangman!!" << endl;
     }
     else
     {
-        endOfGame.loadMedia("Game over!! Murderer!!!!!");
+        endOfGame.loadWord("game over!! murderer!!!!!", 0, (SCREEN_HEIGHT/2));
         //cout << "Game over!! Murderer!!!!!" << endl;
-    }
+    }*/
     
     //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
-    SDL_RenderClear(gRenderer);
+    //SDL_RenderClear(gRenderer);
     //SDL_RenderPresent(gRenderer);
     
     while (!correctAnswer)
     {
-        question.loadMedia("Would you like to play again? (y/n)");
+        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0x00);
         SDL_RenderClear(gRenderer);
-        endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
-        question.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, ((SCREEN_HEIGHT - endOfGame.getHeight()) / 2) + endOfGame.getHeight());
+        if (victory)
+        {
+            endOfGame.loadWord("congratulations!!! you saved the hangman!!", 0, (SCREEN_HEIGHT/2));
+            //cout << "Congratulations!!! You saved the hangman!!" << endl;
+        }
+        else
+        {
+            endOfGame.loadWord("game over!! murderer!!!!!", 0, (SCREEN_HEIGHT/2));
+            //cout << "Game over!! Murderer!!!!!" << endl;
+        }
+        question.loadWord("would you like to play again? (y/n)", 0, ((SCREEN_HEIGHT/2)+50));
+        //SDL_RenderClear(gRenderer);
+        //endOfGame.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, (SCREEN_HEIGHT - endOfGame.getHeight()) / 2);
+        //question.render((SCREEN_WIDTH - endOfGame.getWidth()) / 2, ((SCREEN_HEIGHT - endOfGame.getHeight()) / 2) + endOfGame.getHeight());
         SDL_RenderPresent(gRenderer);
         //cout << "Would you like to play again? (y/n)" << endl;
         //cin >> letterStr;
