@@ -68,14 +68,16 @@ int main(int argc, const char * argv[])
             //Event handler
             SDL_Event e;
             
+            //game loop
             while (!gameOver && !quit)
             {
-                //gameOver = false;
+                //initialize variables
                 victory = false;
                 correctAnswer = false;
                 attempts = 0;
+                //determine length of word
                 selectionLength = difficultyLevel(charCount, e, quit, MAX_ATTEMPTS);
-                
+                //build array of linked list with words of specified length
                 singleLinkedList<string> tempTree(charCount[selectionLength]);
                 alphaList = new singleLinkedList<string>*[26];
                 for (int i = 0; i < 26; i++)
@@ -83,6 +85,7 @@ int main(int argc, const char * argv[])
                     alphaList[i] = new singleLinkedList<string>[selectionLength+1];
                 }
                 emptyAndReInsert(tempTree, alphaList, selectionLength);
+                //initialize word array
                 char guessesArray[(selectionLength+1)];
                 for (int i = 0; i < selectionLength; i++)
                 {
@@ -96,6 +99,7 @@ int main(int argc, const char * argv[])
                 }
                 
                 evilWordString.clear();
+                //set up game on screen
                 incorrectGuesses = " ";
                 for (int i = 0; i < selectionLength; i++)
                 {
@@ -111,6 +115,7 @@ int main(int argc, const char * argv[])
                 
                 while(!gameOver && !victory)
                 {
+                    //get user input
                     do
                     {
                         key = '\0';
@@ -163,6 +168,7 @@ int main(int argc, const char * argv[])
                     firstDimension = key - 'a';
                     secondDimension = 0;
                     answer = 0;
+                    //find largest set of words
                     while(secondDimension < selectionLength)
                     {
                         int tempSize = alphaList[firstDimension][secondDimension].getSize();
@@ -173,15 +179,16 @@ int main(int argc, const char * argv[])
                         }
                         secondDimension++;
                     }
+                    //determine whether input is in largest set of words
                     if (answer > 0)
                     {
                         correct[(key - 'a')] = true;
                     }
                     else
                     {
-                        //responses[(key) - 'a'] = true;
                         incorrectGuesses = incorrectGuesses + key;
                     }
+                    //rebuild array based off largest set
                     swap(tempTree, alphaList[firstDimension][answer]);
                     if (tempTree.getSize() == 1)
                     {
@@ -194,25 +201,30 @@ int main(int argc, const char * argv[])
                             alphaList[l][k].makeEmpty();
                         }
                     }
+                    //determine if and where the input letter is located in the largest set 
                     if (answer > 0)
                     {
                         combinations(tempTree, 0, selectionLength, answer, key, guessesArray);
                     }
+                    //rebuild the array with the largest set and set location of input letter
                     emptyAndReInsert(tempTree, alphaList, selectionLength);
                     
+                    //check if user is at attempt limit
                     attemptCheck(victory, selectionLength, guessesArray, answer, attempts, gameOver, MAX_ATTEMPTS);
                     
+                    //for any new letters added to the string representing the set of words still possible
                     evilWordString = "";
                     for (int i = 0; i < selectionLength; i++)
                     {
                         evilWordString = evilWordString + guessesArray[i];
                     }
                     
+                    //updates screen with new letters or incorrect guesses
                     SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                     SDL_RenderClear(gRenderer);
                     evilWord.loadWord(evilWordString, 0, ((SCREEN_HEIGHT/4)*3));
                     incorrectLetters.loadWord(incorrectGuesses, 50, 50);
-                    
+                    //print current state of hangman
                     renderHangman(gRenderer, attempts);
                     SDL_RenderPresent(gRenderer);
                     if (attempts == MAX_ATTEMPTS)
@@ -220,7 +232,7 @@ int main(int argc, const char * argv[])
                         SDL_Delay(1500);
                     }
                 }
-                
+                //reinitialize strings
                 incorrectLetters.free();
                 evilWord.free();
                 SDL_RenderClear(gRenderer);
